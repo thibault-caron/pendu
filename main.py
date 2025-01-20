@@ -3,21 +3,25 @@ from pygame.locals import *
 
 import os
 import random
+from time import sleep
 from string import ascii_letters
+
+from fonctions.menu import menu
 
 
 pygame.init()
 pygame.font.init()
 
-screen = pygame.display.set_mode((480, 640))
-pygame.display.set_caption("Hangman")
+screen = pygame.display.set_mode((720, 640))
+pygame.display.set_caption("Pendu")
 
 class Hangman():
     def __init__(self):
         with open("./mots.txt", "r") as file:
             # picks secret word
             words = file.read().split("\n")
-            self.secret_word = random.choice(words)
+            # self.secret_word = random.choice(words)
+            self.secret_word = "CorticOIdes"
             # passing secret word's length for making letter blanks
             self.guessed_word = "*" * len(self.secret_word)
         self.wrong_guesses = []
@@ -29,7 +33,7 @@ class Hangman():
         self.gallow_color = (0,0,0)
         self.body_color = (255,253,175)
 
-        self.font = pygame.font.SysFont("Courier New", 20)
+        self.font = pygame.font.SysFont("Bauhaus 93", 32)
         self.FPS = pygame.time.Clock()
 
 
@@ -86,6 +90,8 @@ class Hangman():
             screen.fill(pygame.Color(0,0,79), (40, 218, 320, 30))
             message = self.font.render("YOU WIN!!", True, (255,235,0))
             screen.blit(message,(152,224))
+            # sleep(5)
+            # Hangman().main()
 
         # lose situation
         elif self.wrong_guess_count == 6:
@@ -96,6 +102,8 @@ class Hangman():
             # shows the secret word if the player lose
             word = self.font.render(f"secret word: {self.secret_word}", True, (255,255,255))
             screen.blit(word,(10,300))
+            # sleep(5)
+            # Hangman().main()
 
         # removes the instruction message if not taking guesses anymore
         if not self.taking_guess:
