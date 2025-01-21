@@ -1,18 +1,8 @@
-"""
-Auteurs : Lorenzo OTTAVIANI, Olivier PORTAL et Thibault CARON
-Date : 20/01/2025 15h48
-But du programme :
-    Créer un jeu de pendu en utilisant l'interface graphique PyGame
-Entrée :
-Sortie :
-"""
-
 import pygame
-from pygame.locals import *
+import sys
 
 # Initialisation de Pygame
 pygame.init()
-pygame.font.init()
 
 # Dimensions de la fenêtre
 LARGEUR, HAUTEUR = 1000, 700
@@ -20,15 +10,11 @@ fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
 pygame.display.set_caption("Jeu du Pendu - Edition spéciale Jinx")
 
 # Couleurs
-NOIR = (0, 0, 0)
-GRIS = (127, 127, 127)
-BLANC = (255, 255, 255)
-ROUGE = (255, 0, 0)
-VERT = (0, 255, 0)
-BLEU = (0, 0, 255)
-JAUNE = (255, 255, 0)
-CYAN = (0, 255, 255)
-MAGENTA = (255, 0, 255)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+NEON_BLUE = (0, 200, 255)
+NEON_PURPLE = (138, 43, 226)
+RED = (255, 0, 0)
 
 # Police
 font = pygame.font.Font(None, 60)
@@ -77,7 +63,7 @@ jinx_jambe_gauche = pygame.image.load("image/jinx_left_leg.webp")
 jinx_jambe_gauche = pygame.transform.scale(jinx_jambe_gauche, (353/2, 1276/2))
 
 # Dessiner la potence
-def dessine_potence():
+def draw_gallows():
     fenetre.blit(potence_base_img, (260, 430))
     fenetre.blit(potence_vert_img, (350, 30))
     fenetre.blit(corde_img, (500, 30))
@@ -85,7 +71,7 @@ def dessine_potence():
     
 
 # Dessiner Jinx
-def dessine_jinx(stage):
+def draw_jinx(stage):
     if stage > 0:  # Tête
         fenetre.blit(jinx_tete, (460, 115))
     if stage > 1:  # Corps
@@ -100,48 +86,52 @@ def dessine_jinx(stage):
         fenetre.blit(jinx_jambe_droite, (460, 115))
     if stage > 5:  # Jambe droite
         fenetre.blit(jinx_jambe_gauche, (460, 115))
+        
+        
+# Dessiner les lettres
+def draw_text(word, guessed):
+    display_word = " ".join([letter if letter in guessed else "_" for letter in word])
+    text = font.render(display_word, True, WHITE)
+    fenetre.blit(text, (300, 650))
 
-fichier_mots = "mots.txt"
-
-touches_alphabet = {K_a: "a", K_b: "b", K_c: "c", K_d: "d", K_e: "e", K_f: "f", K_g: "g", K_h: "h", K_i: "i", K_j: "j",
-                    K_k: "k", K_l: "l", K_m: "m", K_n: "n", K_o: "o", K_p: "p", K_q: "q", K_r: "r", K_s: "s", K_t: "t",
-                    K_u: "u", K_v: "v", K_w: "w", K_x: "x", K_y: "y", K_z: "z"}
-
-police = pygame.font.SysFont("Courier New", 32)
-FPS = pygame.time.Clock()
-
-
+# Jeu principal
 def main():
-    """"""
-    en_cours = True    
-    while en_cours:
-        
-        fenetre.blit(fond_ecran_img, (0, 0))
-        dessine_potence()
-        
-        for evenement in pygame.event.get():
-            if evenement.type == pygame.QUIT:
-                en_cours = False
+    clock = pygame.time.Clock()
+    word = "POWDER"  # Mot à deviner
+    guessed = []
+    mistakes = 0
+    running = True
 
-            if evenement.type == pygame.KEYDOWN:
-                if evenement.key == pygame.K_r:
-                    couleur = ROUGE
-                elif evenement.key == pygame.K_v:
-                    couleur = VERT
-                    fenetre
-                elif evenement.key == pygame.K_1:
-                    police.render("Placeholder lance partie")
-            
-        pygame.display.update()
-        FPS.tick(60)
+    while running:
+        fenetre.blit(fond_ecran_img, (0, 0))  # Ajouter le fond
+        draw_gallows()
+        draw_jinx(mistakes)
+        draw_text(word, guessed)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.KEYDOWN:
+                if event.unicode.isalpha():
+                    letter = event.unicode.upper()
+                    if letter in word and letter not in guessed:
+                        guessed.append(letter)
+                    elif letter not in word:
+                        mistakes += 1
+
+        # Vérifications de fin de jeu
+        if mistakes > 5:
+            text = font.render("Perdu !", True, RED)
+            fenetre.blit(text, (400, 100))
+        elif all(letter in guessed for letter in word):
+            text = font.render("Gagné !", True, NEON_PURPLE)
+            fenetre.blit(text, (400, 100))
+
+        pygame.display.flip()
+        clock.tick(30)
 
     pygame.quit()
+    sys.exit()
 
-
-if __name__ == "__main__":  # Evite que le programme puisse être lancé depuis un autre programme.
-
-    # nouveau_mot = "tuyau"
-    # ajouter_mot(fichier_mots, nouveau_mot)
+if __name__ == "__main__":
     main()
-
-
