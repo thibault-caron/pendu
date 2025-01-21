@@ -19,7 +19,7 @@ RED = (255, 0, 0)
 # Police
 font = pygame.font.Font(None, 60)
 
-############ Chargement des assets
+############ Affichage des objets
 # Ajouter une image de fond
 fond_ecran_img = pygame.image.load("image/fond_ecran.jpg")
 fond_ecran_img = pygame.transform.scale(fond_ecran_img, (LARGEUR, HAUTEUR))
@@ -43,7 +43,7 @@ corde_img = pygame.transform.scale(corde_img, (100, 180))
 corde2_img = pygame.image.load("image/corde2.png")
 corde2_img = pygame.transform.scale(corde2_img, (100, 180))
 
-# Dessiner Jinx
+# Le pendu => Jinx
 jinx_tete = pygame.image.load("image/jinx_head.webp")
 jinx_tete = pygame.transform.scale(jinx_tete, (353/2, 1276/2))
 
