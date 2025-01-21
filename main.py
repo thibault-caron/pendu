@@ -1,149 +1,141 @@
+"""
+Auteurs : Lorenzo OTTAVIANI, Olivier PORTAL et Thibault CARON
+Date : 21/01/2025 15h53
+But du programme :
+    Créer un jeu de pendu en utilisant l'interface graphique PyGame
+Entrée :
+Sortie :
+"""
+
 import pygame
 from pygame.locals import *
 
-import os
-import random
-from time import sleep
-from string import ascii_letters
-
-from fonctions.menu import menu
-
-
+# Initialisation de Pygame
 pygame.init()
 pygame.font.init()
 
-screen = pygame.display.set_mode((720, 640))
-pygame.display.set_caption("Pendu")
+# Dimensions de la fenêtre (classe)
+LARGEUR, HAUTEUR = 1000, 700
+fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
+pygame.display.set_caption("Jeu du Pendu - Edition spéciale Jinx")
 
-class Hangman():
-    def __init__(self):
-        with open("./mots.txt", "r") as file:
-            # picks secret word
-            words = file.read().split("\n")
-            self.secret_word = random.choice(words)
-            # self.secret_word = "CorticOIdes"
-            # passing secret word's length for making letter blanks
-            self.guessed_word = "*" * len(self.secret_word)
-        self.wrong_guesses = []
-        self.max_errors = 7
-        self.wrong_guess_count = self.max_errors
-        self.taking_guess = True
-        self.running = True
-
-        self.background_color = (155, 120, 70)
-        self.gallow_color = (0,0,0)
-        self.body_color = (255,253,175)
-
-        self.font = pygame.font.SysFont("Courier New", 22)
-        self.FPS = pygame.time.Clock()
+# Couleurs
+NOIR = (0, 0, 0)
+GRIS = (127, 127, 127)
+BLANC = (255, 255, 255)
+ROUGE = (255, 0, 0)
+VERT = (0, 255, 0)
+BLEU = (0, 0, 255)
+JAUNE = (255, 255, 0)
+CYAN = (0, 255, 255)
+MAGENTA = (255, 0, 255)
 
 
-    # draws the gallow
-    def _gallow(self):
-        stand = pygame.draw.rect(screen, self.gallow_color, pygame.Rect(75, 280, 120, 10))
-        body = pygame.draw.rect(screen, self.gallow_color, pygame.Rect(128, 40, 10, 240))
-        hanger = pygame.draw.rect(screen, self.gallow_color, pygame.Rect(128, 40, 80, 10))
-        rope = pygame.draw.rect(screen, self.gallow_color, pygame.Rect(205, 40,10, 30))
+# AFFICHAGE DES OBJETS #
+
+# Ajouter une image de fond
+fond_ecran = pygame.image.load("image/fond_ecran.jpg")
+fond_ecran = pygame.transform.scale(fond_ecran, (LARGEUR, HAUTEUR))
+
+# Base
+potence_base = pygame.image.load("image/acier2.jpg")
+potence_base = pygame.transform.scale(potence_base, (200, 20))
+
+# Poteau vertical
+potence_verticale = pygame.image.load("image/acier2.jpg")
+potence_verticale = pygame.transform.scale(potence_verticale, (20, 400))
+
+# Poteau horizontal
+potence_horizontale = pygame.image.load("image/acier2.jpg")
+potence_horizontale = pygame.transform.scale(potence_horizontale, (200, 20))
+
+# Corde
+corde1 = pygame.image.load("image/corde.png")
+corde1 = pygame.transform.scale(corde1, (50, 90))
+
+corde2 = pygame.image.load("image/corde2.png")
+corde2 = pygame.transform.scale(corde2, (50, 90))
+
+# Jinx
+jinx_tete = pygame.image.load("image/jinx_head.webp")
+jinx_tete = pygame.transform.scale(jinx_tete, (353 / 4, 1276 / 4))
+
+jinx_corps = pygame.image.load("image/jinx_body.webp")
+jinx_corps = pygame.transform.scale(jinx_corps, (353 / 4, 1276 / 4))
+
+jinx_bras_droit = pygame.image.load("image/jinx_right_arm.webp")
+jinx_bras_droit = pygame.transform.scale(jinx_bras_droit, (353 / 4, 1276 / 4))
+
+jinx_bras_gauche = pygame.image.load("image/jinx_left_arm.webp")
+jinx_bras_gauche = pygame.transform.scale(jinx_bras_gauche, (353 / 4, 1276 / 4))
+
+jinx_jambe_droite = pygame.image.load("image/jinx_right_leg.webp")
+jinx_jambe_droite = pygame.transform.scale(jinx_jambe_droite, (353 / 4, 1276 / 4))
+
+jinx_jambe_gauche = pygame.image.load("image/jinx_left_leg.webp")
+jinx_jambe_gauche = pygame.transform.scale(jinx_jambe_gauche, (353 / 4, 1276 / 4))
 
 
-    # draw man's body parts for every wrong guess
-    def _man_pieces(self):
-        if self.wrong_guess_count == self.max_errors - 1:
-            head = pygame.draw.circle(screen, self.body_color, [210, 85], 20, 0)
-        elif self.wrong_guess_count == self.max_errors - 2:
-            body = pygame.draw.rect(screen, self.body_color, pygame.Rect(206, 105, 8, 45))
-        elif self.wrong_guess_count == self.max_errors - 3:
-            r_arm = pygame.draw.line(screen, self.body_color, [183, 149], [200, 107], 6)
-        elif self.wrong_guess_count == self.max_errors - 4:
-            l_arm = pygame.draw.line(screen, self.body_color, [231, 149], [218, 107], 6),
-        elif self.wrong_guess_count == self.max_errors - 5:
-            r_leg = pygame.draw.line(screen, self.body_color, [189, 198], [208, 148], 6),
-        elif self.wrong_guess_count == self.max_errors - 6:
-            l_leg = pygame.draw.line(screen, self.body_color, [224, 198], [210, 148], 6)
+# Dessiner la potence
+def dessine_potence():
+    fenetre.blit(potence_base, (260, 430))
+    fenetre.blit(potence_verticale, (350, 30))
+    fenetre.blit(corde1, (500, 30))
+    fenetre.blit(potence_horizontale, (370, 30))
 
 
-    def _right_guess(self, guess_letter):
-        index_positions = [index for index, item in enumerate(self.secret_word) if item == guess_letter]
-        for i in index_positions:
-            self.guessed_word = self.guessed_word[0:i] + guess_letter + self.guessed_word[i+1:]
-        # stacks a layer of color on guessed word to hide multiple guessed_word stack
-        screen.fill(pygame.Color(self.background_color), (10, 370, 390, 20))
+# Dessiner Jinx
+def dessine_jinx(tour):
+    if tour > 0:  # Tête
+        fenetre.blit(jinx_tete, (480, 70))
+    if tour > 1:  # Corps
+        fenetre.blit(jinx_corps, (480, 70))
+        fenetre.blit(corde2, (500, 30))
+        fenetre.blit(jinx_tete, (480, 70))
+    if tour > 2:  # Bras gauche
+        fenetre.blit(jinx_bras_droit, (480, 70))
+    if tour > 3:  # Bras droit
+        fenetre.blit(jinx_bras_gauche, (480, 70))
+    if tour > 4:  # Jambe gauche
+        fenetre.blit(jinx_jambe_droite, (480, 70))
+    if tour > 5:  # Jambe droite
+        fenetre.blit(jinx_jambe_gauche, (480, 70))
 
 
-    def _wrong_guess(self, guess_letter):
-        self.wrong_guesses.append(guess_letter)
-        self.wrong_guess_count -= 1
-        self._man_pieces()
+fichier_mots = "mots.txt"
+
+touches_alphabet = {K_a: "a", K_b: "b", K_c: "c", K_d: "d", K_e: "e", K_f: "f", K_g: "g", K_h: "h", K_i: "i", K_j: "j",
+                    K_k: "k", K_l: "l", K_m: "m", K_n: "n", K_o: "o", K_p: "p", K_q: "q", K_r: "r", K_s: "s", K_t: "t",
+                    K_u: "u", K_v: "v", K_w: "w", K_x: "x", K_y: "y", K_z: "z"}
+
+police = pygame.font.SysFont("Courier New", 32)
+FPS = pygame.time.Clock()
 
 
-    def _guess_taker(self, guess_letter):
-        if guess_letter in ascii_letters:
-            if guess_letter in self.secret_word and guess_letter not in self.guessed_word:
-                self._right_guess(guess_letter)
-            elif guess_letter not in self.secret_word and guess_letter not in self.wrong_guesses:
-                self._wrong_guess(guess_letter)
+def main():
+    """"""
+    en_cours = True
+    while en_cours:
+
+        fenetre.blit(fond_ecran, (0, 0))
+        dessine_potence()
+
+        for evenement in pygame.event.get():
+            if evenement.type == pygame.QUIT:
+                en_cours = False
+
+            # if evenement.type == pygame.KEYDOWN:
+                # if evenement.key == pygame.K_r:
+                    # couleur = ROUGE
+
+        pygame.display.update()
+        FPS.tick(60)
+
+    pygame.quit()
 
 
-    def _message(self):
-        # win situation
-        if self.guessed_word == self.secret_word:
-            self.taking_guess = False
-            screen.fill(pygame.Color(0,0,79), (40, 218, 320, 30))
-            message = self.font.render("YOU WIN!!", True, (255,235,0))
-            screen.blit(message,(152,224))
-            # sleep(5)
-            # Hangman().main()
+if __name__ == "__main__":  # Evite que le programme puisse être lancé depuis un autre programme.
 
-        # lose situation
-        elif self.wrong_guess_count == 0:
-            self.taking_guess = False
-            screen.fill(pygame.Color("grey"), (40, 218, 320, 30))
-            message = self.font.render("GAME OVER YOU LOSE!!", True, (150,0,10))
-            screen.blit(message,(78,224))
-            # shows the secret word if the player lose
-            word = self.font.render(f"secret word: {self.secret_word}", True, (255,255,255))
-            screen.blit(word,(10,300))
-            # sleep(5)
-            # Hangman().main()
-
-        # removes the instruction message if not taking guesses anymore
-        if not self.taking_guess:
-            screen.fill(pygame.Color(self.background_color), (35, 460, 390, 20))
-
-
-    def main(self):
-        # game's main components (no need to update)
-        screen.fill(self.background_color)
-        self._gallow()
-        instructions = self.font.render('Press any key to take Guess', True, (9,255,78))
-        screen.blit(instructions,(35,460))
-
-        while self.running:
-            # shows the guessed word in the game window
-            guessed_word = self.font.render(f"guessed word: {self.guessed_word}", True, (0,0,138))
-            screen.blit(guessed_word,(10,370))
-            # shows the wrong guesses in the game window
-            wrong_guesses = self.font.render(f"wrong guesses: {' '.join(map(str, self.wrong_guesses))}", True, (125,0,0))
-            screen.blit(wrong_guesses,(10,420))
-
-            # checking game state
-            self._message()
-        
-            for self.event in pygame.event.get():
-                if self.event.type == pygame.QUIT:
-                    self.running = False
-
-                # manages keys pressed
-                elif self.event.type == pygame.KEYDOWN:
-                    if self.taking_guess:
-                        self._guess_taker(self.event.unicode)
-
-            pygame.display.flip()
-            self.FPS.tick(60)
-
-        pygame.quit()
-
-
-if __name__ =="__main__":
-    h = Hangman()
-    h.main()
+    # nouveau_mot = "tuyau"
+    # ajouter_mot(fichier_mots, nouveau_mot)
+    main()

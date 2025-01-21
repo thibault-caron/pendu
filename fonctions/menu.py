@@ -1,7 +1,6 @@
-# from main import Hangman
-# from ..main import main
 
-def menu():
+from .ajouter_mot import ajouter_mot
+def menu(font, fichier_mots, choix_joueur):
     """
     Main function used to provide options to the user to exit or enter a new operation,
     with or without the previous result.
@@ -9,37 +8,38 @@ def menu():
     :param: index: The index of the last operation in operations history.
     :return: ∅
     """
-    choix_joueur = input("\nEnter your choice ('h' for help): ")
+    choix = choix_joueur
 
-    match choix_joueur:
-        case "1": 
-            Hangman().main()  
+    match choix:
+        case "1":  # Lancer une partie
+            font.render("Placeholder lance partie")
+            # Hangman().main()  
 
         case "2":  # ajouter un mot dans le dictionnaire
+            fichier = fichier_mots
             nouveau_mot = input("Enter the new word to add: ").lower()
-            with open("mots.txt", "a") as myfile:
-                myfile.write(nouveau_mot)
+            ajouter_mot(fichier, nouveau_mot)
             menu()
 
         case "3":  # Change la difficulté
-            difficulte()
+            # difficulte()
             menu()
 
         case "4":  # Affiche les scores
-            print("Scores:")
+            font.render("Scores:")
             with open("scores.txt", "r") as myfile:
                 scores = myfile.read().splitlines()
             for i, score in enumerate(scores, start=1):
                 print(f"{i}. {score}")
 
         case "5":  # Exit the program.
-            print("Goodbye.\n")
+            font.render("Goodbye.\n")
             exit()
 
         case "h":  # Display menu again.
-            affiche_menu()
+            # affiche_menu()
             menu()
 
         case _:  # Case of a wrong input.
-            print("Saisie pourrie")
+            font.render("Mauvaise saisie")
             menu()
