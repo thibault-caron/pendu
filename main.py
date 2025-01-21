@@ -11,6 +11,9 @@ import pygame
 from fonctions.ajouter_mot import ajouter_mot
 from pygame.locals import *
 
+pygame.init()
+pygame.font.init()
+
 NOIR = (0, 0, 0)
 GRIS = (127, 127, 127)
 BLANC = (255, 255, 255)
@@ -35,14 +38,13 @@ couleur_arriere_plan = (155, 120, 70)
 # couleur_gibet = (0, 0, 0)
 # couleur_bonhomme = (255, 253, 175)
 
-# font = pygame.font.SysFont("Courier New", 32)
-# FPS = pygame.time.Clock()
+font = pygame.font.SysFont("Courier New", 32)
+FPS = pygame.time.Clock()
 
 
 
 def main():
     """"""
-    pygame.init()
     en_cours = True
     couleur = couleur_arriere_plan
     ecran.fill(couleur)
