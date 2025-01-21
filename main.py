@@ -34,13 +34,11 @@ ecran = pygame.display.set_mode((1280, 720))
 pygame.display.set_caption("Jeu de pendu")
 
 couleur_arriere_plan = (155, 120, 70)
-
 # couleur_gibet = (0, 0, 0)
 # couleur_bonhomme = (255, 253, 175)
 
 font = pygame.font.SysFont("Courier New", 32)
 FPS = pygame.time.Clock()
-
 
 
 def main():
@@ -60,7 +58,7 @@ def main():
                 elif event.key == pygame.K_v:
                     couleur = VERT
 
-        ecran.fill(couleur)
+            ecran.fill(couleur)
         pygame.display.update()
 
     pygame.quit()
