@@ -9,6 +9,7 @@ Sortie :
 
 import pygame
 from pygame.locals import *
+import random
 
 # Initialisation de Pygame
 pygame.init()
@@ -30,6 +31,11 @@ JAUNE = (255, 255, 0)
 CYAN = (0, 255, 255)
 MAGENTA = (255, 0, 255)
 
+# Police
+police = pygame.font.SysFont("Courier New", 32)
+
+# Horloge
+FPS = pygame.time.Clock()
 
 # AFFICHAGE DES OBJETS #
 
@@ -102,33 +108,56 @@ def dessine_jinx(tour):
         fenetre.blit(jinx_jambe_gauche, (480, 70))
 
 
+# Dessiner les lettres
+def affiche_texte(mot, devine):
+    affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
+    texte = police.render(affiche_mot, True, BLANC)
+    fenetre.blit(texte, (300, 650))
+
 fichier_mots = "mots.txt"
 
 touches_alphabet = {K_a: "a", K_b: "b", K_c: "c", K_d: "d", K_e: "e", K_f: "f", K_g: "g", K_h: "h", K_i: "i", K_j: "j",
                     K_k: "k", K_l: "l", K_m: "m", K_n: "n", K_o: "o", K_p: "p", K_q: "q", K_r: "r", K_s: "s", K_t: "t",
                     K_u: "u", K_v: "v", K_w: "w", K_x: "x", K_y: "y", K_z: "z"}
 
-police = pygame.font.SysFont("Courier New", 32)
-FPS = pygame.time.Clock()
-
 
 def main():
     """"""
+    mot = "POWDER"  # Mot à deviner
+    devine = []
+    erreurs = 0
     en_cours = True
     while en_cours:
 
         fenetre.blit(fond_ecran, (0, 0))
         dessine_potence()
+        dessine_jinx(erreurs)
+        affiche_texte(mot, devine)
 
         for evenement in pygame.event.get():
             if evenement.type == pygame.QUIT:
                 en_cours = False
+            if evenement.type == pygame.KEYDOWN:
+                if evenement.unicode.isalpha():
+                    lettre = evenement.unicode.upper()
+                    if lettre in mot and lettre not in devine:
+                        devine.append(lettre)
+                    elif lettre not in mot:
+                        erreurs += 1
+
+        # Vérifications de fin de jeu
+        if erreurs > 5:
+            text = police.render("Perdu !", True, ROUGE)
+            fenetre.blit(text, (400, 100))
+        elif all(lettre in devine for lettre in mot):
+            text = police.render("Gagné !", True, VERT)
+            fenetre.blit(text, (400, 100))
 
             # if evenement.type == pygame.KEYDOWN:
                 # if evenement.key == pygame.K_r:
                     # couleur = ROUGE
 
-        pygame.display.update()
+        pygame.display.flip()
         FPS.tick(60)
 
     pygame.quit()

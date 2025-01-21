@@ -1,5 +1,5 @@
-
 from .ajouter_mot import ajouter_mot
+
 def menu(font, fichier_mots, choix_joueur):
     """
     Main function used to provide options to the user to exit or enter a new operation,
