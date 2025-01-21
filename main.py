@@ -11,9 +11,6 @@ import pygame
 from fonctions.ajouter_mot import ajouter_mot
 from pygame.locals import *
 
-screen = pygame.display.set_mode((1280, 720))
-pygame.display.set_caption("Jeu de pendu")
-
 NOIR = (0, 0, 0)
 GRIS = (127, 127, 127)
 BLANC = (255, 255, 255)
@@ -30,21 +27,39 @@ touches_alphabet = {K_a: "a", K_b: "b", K_c: "c", K_d: "d", K_e: "e", K_f: "f", 
                     K_k: "k", K_l: "l", K_m: "m", K_n: "n", K_o: "o", K_p: "p", K_q: "q", K_r: "r", K_s: "s", K_t: "t",
                     K_u: "u", K_v: "v", K_w: "w", K_x: "x", K_y: "y", K_z: "z"}
 
+ecran = pygame.display.set_mode((1280, 720))
+pygame.display.set_caption("Jeu de pendu")
+
 couleur_arriere_plan = (155, 120, 70)
-couleur_gibet = (0,0,0)
-couleur_bonhomme = (255,253,175)
 
-font = pygame.font.SysFont("Courier New", 20)
-FPS = pygame.time.Clock()
+# couleur_gibet = (0, 0, 0)
+# couleur_bonhomme = (255, 253, 175)
 
-# print(open(fichier_mots).read())
+# font = pygame.font.SysFont("Courier New", 32)
+# FPS = pygame.time.Clock()
+
+
 
 def main():
-    running = True
-    while running:
+    """"""
+    pygame.init()
+    en_cours = True
+    couleur = couleur_arriere_plan
+    ecran.fill(couleur)
+
+    while en_cours:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                en_cours = False
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    couleur = ROUGE
+                elif event.key == pygame.K_v:
+                    couleur = VERT
+
+        ecran.fill(couleur)
+        pygame.display.update()
 
     pygame.quit()
 
