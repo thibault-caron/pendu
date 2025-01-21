@@ -20,12 +20,13 @@ class Hangman():
         with open("./mots.txt", "r") as file:
             # picks secret word
             words = file.read().split("\n")
-            # self.secret_word = random.choice(words)
-            self.secret_word = "CorticOIdes"
+            self.secret_word = random.choice(words)
+            # self.secret_word = "CorticOIdes"
             # passing secret word's length for making letter blanks
             self.guessed_word = "*" * len(self.secret_word)
         self.wrong_guesses = []
-        self.wrong_guess_count = 0
+        self.max_errors = 7
+        self.wrong_guess_count = self.max_errors
         self.taking_guess = True
         self.running = True
 
@@ -33,7 +34,7 @@ class Hangman():
         self.gallow_color = (0,0,0)
         self.body_color = (255,253,175)
 
-        self.font = pygame.font.SysFont("Bauhaus 93", 32)
+        self.font = pygame.font.SysFont("Courier New", 22)
         self.FPS = pygame.time.Clock()
 
 
@@ -47,17 +48,17 @@ class Hangman():
 
     # draw man's body parts for every wrong guess
     def _man_pieces(self):
-        if self.wrong_guess_count == 1:
+        if self.wrong_guess_count == self.max_errors - 1:
             head = pygame.draw.circle(screen, self.body_color, [210, 85], 20, 0)
-        elif self.wrong_guess_count == 2:
+        elif self.wrong_guess_count == self.max_errors - 2:
             body = pygame.draw.rect(screen, self.body_color, pygame.Rect(206, 105, 8, 45))
-        elif self.wrong_guess_count == 3:
+        elif self.wrong_guess_count == self.max_errors - 3:
             r_arm = pygame.draw.line(screen, self.body_color, [183, 149], [200, 107], 6)
-        elif self.wrong_guess_count == 4:
+        elif self.wrong_guess_count == self.max_errors - 4:
             l_arm = pygame.draw.line(screen, self.body_color, [231, 149], [218, 107], 6),
-        elif self.wrong_guess_count == 5:
+        elif self.wrong_guess_count == self.max_errors - 5:
             r_leg = pygame.draw.line(screen, self.body_color, [189, 198], [208, 148], 6),
-        elif self.wrong_guess_count == 6:
+        elif self.wrong_guess_count == self.max_errors - 6:
             l_leg = pygame.draw.line(screen, self.body_color, [224, 198], [210, 148], 6)
 
 
@@ -71,7 +72,7 @@ class Hangman():
 
     def _wrong_guess(self, guess_letter):
         self.wrong_guesses.append(guess_letter)
-        self.wrong_guess_count += 1
+        self.wrong_guess_count -= 1
         self._man_pieces()
 
 
@@ -94,7 +95,7 @@ class Hangman():
             # Hangman().main()
 
         # lose situation
-        elif self.wrong_guess_count == 6:
+        elif self.wrong_guess_count == 0:
             self.taking_guess = False
             screen.fill(pygame.Color("grey"), (40, 218, 320, 30))
             message = self.font.render("GAME OVER YOU LOSE!!", True, (150,0,10))

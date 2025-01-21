@@ -1,4 +1,4 @@
-from ..main import Hangman
+# from main import Hangman
 # from ..main import main
 
 def menu():
