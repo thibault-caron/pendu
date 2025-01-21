@@ -19,7 +19,7 @@ LARGEUR, HAUTEUR = 1000, 700
 fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
 pygame.display.set_caption("Jeu du Pendu - Edition spéciale Jinx")
 
-# Couleurs
+# Couleurs 
 NOIR = (0, 0, 0)
 GRIS = (127, 127, 127)
 BLANC = (255, 255, 255)
