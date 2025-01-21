@@ -8,8 +8,11 @@ Sortie :
 """
 
 import pygame
-from fonctions.ajouter_mot import ajouter_mot
 from pygame.locals import *
+
+from fonctions.ajouter_mot import ajouter_mot
+from fonctions.menu import menu
+
 
 pygame.init()
 pygame.font.init()
@@ -37,7 +40,7 @@ couleur_arriere_plan = (155, 120, 70)
 # couleur_gibet = (0, 0, 0)
 # couleur_bonhomme = (255, 253, 175)
 
-font = pygame.font.SysFont("Courier New", 32)
+police = pygame.font.SysFont("Courier New", 32)
 FPS = pygame.time.Clock()
 
 
@@ -48,18 +51,21 @@ def main():
     ecran.fill(couleur)
 
     while en_cours:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+        for evenement in pygame.event.get():
+            if evenement.type == pygame.QUIT:
                 en_cours = False
 
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_r:
+            if evenement.type == pygame.KEYDOWN:
+                if evenement.key == pygame.K_r:
                     couleur = ROUGE
-                elif event.key == pygame.K_v:
+                elif evenement.key == pygame.K_v:
                     couleur = VERT
-
-            ecran.fill(couleur)
+                    ecran.fill(couleur)
+                elif evenement.key == pygame.K_1:
+                    police.render("Placeholder lance partie")
+            
         pygame.display.update()
+        FPS.tick(60)
 
     pygame.quit()
 
