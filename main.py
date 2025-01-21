@@ -44,7 +44,7 @@ police = pygame.font.SysFont("Courier New", 32)
 FPS = pygame.time.Clock()
 
 
-def main():
+def main(police):
     """"""
     en_cours = True
     couleur = couleur_arriere_plan
@@ -58,11 +58,12 @@ def main():
             if evenement.type == pygame.KEYDOWN:
                 if evenement.key == pygame.K_r:
                     couleur = ROUGE
+                    ecran.fill(couleur)
                 elif evenement.key == pygame.K_v:
                     couleur = VERT
                     ecran.fill(couleur)
-                elif evenement.key == pygame.K_1:
-                    police.render("Placeholder lance partie")
+                elif evenement.key == pygame.K_p:
+                    police.render("Placeholder lance partie", True, (0,0,138))
             
         pygame.display.update()
         FPS.tick(60)
@@ -74,6 +75,6 @@ if __name__ == "__main__":  # Evite que le programme puisse être lancé depuis 
 
     # nouveau_mot = "tuyau"
     # ajouter_mot(fichier_mots, nouveau_mot)
-    main()
+    main(police)
 
 
