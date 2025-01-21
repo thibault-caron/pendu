@@ -40,31 +40,34 @@ potence_horz_img = pygame.transform.scale(potence_horz_img, (200, 20))
 corde_img = pygame.image.load("image/corde.png")
 corde_img = pygame.transform.scale(corde_img, (100, 180))
 
+corde2_img = pygame.image.load("image/corde2.png")
+corde2_img = pygame.transform.scale(corde2_img, (100, 180))
 
-jinx_tete = pygame.image.load("image/jinx_head.webp")  # Ajouter une image de la tête de Jinx
+# Dessiner Jinx
+jinx_tete = pygame.image.load("image/jinx_head.webp")
 jinx_tete = pygame.transform.scale(jinx_tete, (353/2, 1276/2))
 
-jinx_corps = pygame.image.load("image/jinx_body.webp")  # Ajouter une image de la tête de Jinx
+jinx_corps = pygame.image.load("image/jinx_body.webp")
 jinx_corps = pygame.transform.scale(jinx_corps, (353/2, 1276/2))
 
-jinx_bras_droit = pygame.image.load("image/jinx_right_arm.webp")  # Ajouter une image de la tête de Jinx
+jinx_bras_droit = pygame.image.load("image/jinx_right_arm.webp") 
 jinx_bras_droit = pygame.transform.scale(jinx_bras_droit, (353/2, 1276/2))
 
-jinx_bras_gauche = pygame.image.load("image/jinx_left_arm.webp")  # Ajouter une image de la tête de Jinx
+jinx_bras_gauche = pygame.image.load("image/jinx_left_arm.webp")
 jinx_bras_gauche = pygame.transform.scale(jinx_bras_gauche, (353/2, 1276/2))
 
-jinx_jambe_droite = pygame.image.load("image/jinx_right_leg.webp")  # Ajouter une image de la tête de Jinx
+jinx_jambe_droite = pygame.image.load("image/jinx_right_leg.webp")
 jinx_jambe_droite = pygame.transform.scale(jinx_jambe_droite, (353/2, 1276/2))
 
-jinx_jambe_gauche = pygame.image.load("image/jinx_left_leg.webp")  # Ajouter une image de la tête de Jinx
+jinx_jambe_gauche = pygame.image.load("image/jinx_left_leg.webp")
 jinx_jambe_gauche = pygame.transform.scale(jinx_jambe_gauche, (353/2, 1276/2))
 
 # Dessiner la potence
 def draw_gallows():
-    fenetre.blit(potence_base_img, (260, 430))  # Base
-    fenetre.blit(potence_vert_img, (350, 30))  # Poteau vertical
-    fenetre.blit(corde_img, (500, 30))  # Corde
-    fenetre.blit(potence_horz_img, (370, 30))  # Poteau horizontal
+    fenetre.blit(potence_base_img, (260, 430))
+    fenetre.blit(potence_vert_img, (350, 30))
+    fenetre.blit(corde_img, (500, 30))
+    fenetre.blit(potence_horz_img, (370, 30))
     
 
 # Dessiner Jinx
@@ -73,6 +76,8 @@ def draw_jinx(stage):
         fenetre.blit(jinx_tete, (460, 115))
     if stage > 1:  # Corps
         fenetre.blit(jinx_corps, (460, 115))
+        fenetre.blit(corde2_img, (500, 30))
+        fenetre.blit(jinx_tete, (460, 115))
     if stage > 2:  # Bras gauche
         fenetre.blit(jinx_bras_droit, (460, 115))
     if stage > 3:  # Bras droit
