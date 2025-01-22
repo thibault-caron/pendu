@@ -21,8 +21,7 @@ LARGEUR, HAUTEUR = 1000, 700
 fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
 pygame.display.set_caption("Jeu du Pendu - Edition spéciale Jinx")
 
-police = pygame.font.SysFont('Roboto', 35)
-police_survol = pygame.font.SysFont('Roboto', 35, True)
+police = pygame.font.SysFont('Roboto', 15, True, True)
 
 # Couleurs
 NOIR = (0, 0, 0)
@@ -34,6 +33,9 @@ BLEU = (0, 0, 255)
 JAUNE = (255, 255, 0)
 CYAN = (0, 255, 255)
 MAGENTA = (255, 0, 255)
+
+# Police
+police = pygame.font.SysFont("Courier New", 32)
 
 # Horloge
 FPS = pygame.time.Clock()
@@ -109,48 +111,28 @@ def dessine_jinx(tour):
     if tour > 6:  # Jambe droite
         fenetre.blit(jinx_jambe_gauche, (480, 70))
 
+
 # Dessiner les lettres
 def affiche_texte(mot, devine):
     affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
     texte = police.render(affiche_mot, True, BLANC)
     fenetre.blit(texte, (300, 650))
-   
-# Dessiner les boutons
-def bouton_jouer():  
-    # Détecte la postion de la souris en tuple [x, y]
-    souris = pygame.mouse.get_pos()
-        
-    bouton_largeur = 170
-    bouton_hauteur = 40
-    bouton = pygame.image.load("image/acier2.jpg")
-    bouton = pygame.transform.scale(bouton, (bouton_largeur, bouton_hauteur))
-       
-    if bouton_hauteur/2 + 780 <= souris[0] <= bouton_hauteur/2 + 940 and bouton_largeur/2 - 40 <= souris[1] <= bouton_largeur/2 + 20: 
-        jouer = fenetre.blit(bouton, (800, 60))
-        jouer = police_survol.render('jouer' , True , BLANC)
-        fenetre.blit(jouer, (850, 70)) 
-    else: 
-        jouer = fenetre.blit(bouton, (800, 60))        
-        jouer = police.render('jouer' , True , NOIR)
-        fenetre.blit(jouer, (850, 70))
-
-def bouton_arreter():
-    # Détecte la postion de la souris en tuple [x, y]
-    souris = pygame.mouse.get_pos()
-        
-    bouton_largeur = 170
-    bouton_hauteur = 40
-    bouton = pygame.image.load("image/acier2.jpg")
-    bouton = pygame.transform.scale(bouton, (bouton_largeur, bouton_hauteur)) 
     
-    if bouton_hauteur/2 + 780 <= souris[0] <= bouton_hauteur/2 + 940 and bouton_largeur/2 + 60 <= souris[1] <= bouton_largeur/2 + 100:
-        arreter = fenetre.blit(bouton, (800, 140))
-        arreter = police_survol.render("arrêter", True, BLANC)
-        fenetre.blit(arreter, (845, 150)) 
-    else:
-        arreter = fenetre.blit(bouton, (800, 140))
-        arreter = police.render("arrêter", True, NOIR)
-        fenetre.blit(arreter, (845, 150)) 
+# Dessiner les boutons
+def affiche_bouton():
+    # rect = Rect(850, 60, 120, 40)
+    # jouer = pygame.draw.rect(fenetre, BLEU, rect)
+    # fenetre.blit(jouer, (600, 100))
+    bouton = pygame.image.load("image/acier2.jpg")
+    bouton = pygame.transform.scale(bouton, (170, 40))
+    jouer = fenetre.blit(bouton, (800, 60))
+    arreter = fenetre.blit(bouton, (800, 140))
+    
+    jouer = police.render('jouer' , True , NOIR)
+    fenetre.blit(jouer, (840, 63))
+    
+    arreter = police.render("arrêter", True, NOIR)
+    fenetre.blit(arreter, (810, 143))
 
 fichier_mots = "mots.txt"
 
@@ -175,8 +157,7 @@ def main():
 
         fenetre.blit(fond_ecran, (0, 0))
         dessine_potence(erreurs)
-        bouton_jouer()
-        bouton_arreter()
+        affiche_bouton()
         dessine_jinx(erreurs)
 
         # affiche les mauvaises lettres utilisées
