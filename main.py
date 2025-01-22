@@ -123,8 +123,13 @@ touches_alphabet = {K_a: "a", K_b: "b", K_c: "c", K_d: "d", K_e: "e", K_f: "f", 
 
 def main():
     """"""
-    mot = "POWDER"  # Mot à deviner
+    # assigne un mot à trouver depuis le fichier 'mot.txt'
+    # with open("./mots.txt", "r") as file:
+    #     mots = file.read().split("\n")
+    #     mot = random.choice(mots).upper()
+    mot = "POWDER"
     devine = []
+    lettres_fausses = []
     erreurs = 0
     en_cours = True
     while en_cours:
@@ -132,6 +137,11 @@ def main():
         fenetre.blit(fond_ecran, (0, 0))
         dessine_potence()
         dessine_jinx(erreurs)
+
+        # affiche les mauvaises lettres utilisées
+        liste_de_faux = police.render(f"mauvaises lettres: {' '.join(map(str, lettres_fausses))}", True, ROUGE)
+        fenetre.blit(liste_de_faux, (300, 550))
+
         affiche_texte(mot, devine)
 
         for evenement in pygame.event.get():
@@ -142,7 +152,8 @@ def main():
                     lettre = evenement.unicode.upper()
                     if lettre in mot and lettre not in devine:
                         devine.append(lettre)
-                    elif lettre not in mot:
+                    elif lettre not in mot and lettre not in lettres_fausses:
+                        lettres_fausses.append(lettre)
                         erreurs += 1
 
         # Vérifications de fin de jeu
