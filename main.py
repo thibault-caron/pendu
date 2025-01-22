@@ -21,7 +21,7 @@ LARGEUR, HAUTEUR = 1000, 700
 fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
 pygame.display.set_caption("Jeu du Pendu - Edition spéciale Jinx")
 
-police = pygame.font.SysFont('Roboto',35)
+police = pygame.font.SysFont('Roboto', 15, True, True)
 
 # Couleurs
 NOIR = (0, 0, 0)
@@ -123,12 +123,16 @@ def affiche_bouton():
     # rect = Rect(850, 60, 120, 40)
     # jouer = pygame.draw.rect(fenetre, BLEU, rect)
     # fenetre.blit(jouer, (600, 100))
-    jouer = pygame.image.load("image/acier2.jpg")
-    jouer = pygame.transform.scale(potence_base, (120, 40))
-    fenetre.blit(jouer, (850, 60))
+    bouton = pygame.image.load("image/acier2.jpg")
+    bouton = pygame.transform.scale(bouton, (170, 40))
+    jouer = fenetre.blit(bouton, (800, 60))
+    arreter = fenetre.blit(bouton, (800, 140))
     
-    jouer_texte = police.render('jouer' , True , NOIR)
-    fenetre.blit(jouer_texte, (860, 63))
+    jouer = police.render('jouer' , True , NOIR)
+    fenetre.blit(jouer, (840, 63))
+    
+    arreter = police.render("arrêter", True, NOIR)
+    fenetre.blit(arreter, (810, 143))
 
 fichier_mots = "mots.txt"
 
