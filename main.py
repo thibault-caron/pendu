@@ -156,7 +156,7 @@ def main():
 
         # affiche les mauvaises lettres utilisées
         liste_de_faux = police.render(f"mauvaises lettres: {' '.join(map(str, lettres_fausses))}", True, ROUGE)
-        fenetre.blit(liste_de_faux, (300, 550))
+        fenetre.blit(liste_de_faux, (50, 550))
 
         affiche_texte(mot, devine)
 
