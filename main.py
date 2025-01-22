@@ -9,6 +9,7 @@ Sortie :
 
 import pygame
 from pygame.locals import *
+import sys
 import random
 
 # Initialisation de Pygame
@@ -19,6 +20,8 @@ pygame.font.init()
 LARGEUR, HAUTEUR = 1000, 700
 fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
 pygame.display.set_caption("Jeu du Pendu - Edition spéciale Jinx")
+
+police = pygame.font.SysFont('Roboto',35)
 
 # Couleurs
 NOIR = (0, 0, 0)
@@ -113,6 +116,18 @@ def affiche_texte(mot, devine):
     affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
     texte = police.render(affiche_mot, True, BLANC)
     fenetre.blit(texte, (300, 650))
+    
+# Dessiner les boutons
+def affiche_bouton():
+    # rect = Rect(850, 60, 120, 40)
+    # jouer = pygame.draw.rect(fenetre, BLEU, rect)
+    # fenetre.blit(jouer, (600, 100))
+    jouer = pygame.image.load("image/acier2.jpg")
+    jouer = pygame.transform.scale(potence_base, (120, 40))
+    fenetre.blit(jouer, (850, 60))
+    
+    jouer_texte = police.render('jouer' , True , NOIR)
+    fenetre.blit(jouer_texte, (860, 63))
 
 fichier_mots = "mots.txt"
 
@@ -131,6 +146,7 @@ def main():
 
         fenetre.blit(fond_ecran, (0, 0))
         dessine_potence()
+        affiche_bouton()
         dessine_jinx(erreurs)
         affiche_texte(mot, devine)
 
