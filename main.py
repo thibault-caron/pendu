@@ -185,6 +185,8 @@ def main():
             accepte_lettres = False
             text = police.render("Perdu !", True, ROUGE)
             fenetre.blit(text, (400, 100))
+            text = police.render(f"mot à trouver: {mot}", True, ROUGE)
+            fenetre.blit(text, (400, 200))
         elif all(lettre in devine for lettre in mot):
             accepte_lettres = False
             text = police.render("Gagné !", True, VERT)
