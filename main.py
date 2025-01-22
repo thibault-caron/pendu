@@ -245,7 +245,7 @@ def main():
                             erreurs += 1
 
         # Vérifications de fin de jeu
-        if erreurs > 6 and difficulte == "moyen":
+        if erreurs > 9 and difficulte == "facile" or erreurs > 6 and difficulte == "moyen" or erreurs > 4 and difficulte == "difficile":
             accepte_lettres = False
             text = police.render("Perdu !", True, ROUGE)
             fenetre.blit(text, (400, 100))
