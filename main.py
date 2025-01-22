@@ -21,7 +21,8 @@ LARGEUR, HAUTEUR = 1000, 700
 fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
 pygame.display.set_caption("Jeu du Pendu - Edition spéciale Jinx")
 
-police = pygame.font.SysFont('Roboto', 15, True, True)
+police = pygame.font.SysFont('Roboto', 35)
+police_survol = pygame.font.SysFont('Roboto', 35, True)
 
 # Couleurs
 NOIR = (0, 0, 0)
@@ -33,9 +34,6 @@ BLEU = (0, 0, 255)
 JAUNE = (255, 255, 0)
 CYAN = (0, 255, 255)
 MAGENTA = (255, 0, 255)
-
-# Police
-police = pygame.font.SysFont("Courier New", 32)
 
 # Horloge
 FPS = pygame.time.Clock()
@@ -119,19 +117,34 @@ def affiche_texte(mot, devine):
     
 # Dessiner les boutons
 def affiche_bouton():
-    # rect = Rect(850, 60, 120, 40)
-    # jouer = pygame.draw.rect(fenetre, BLEU, rect)
-    # fenetre.blit(jouer, (600, 100))
+    # Détecte la postion de la souris en tuple [x, y]
+    # souris = pygame.mouse.get_pos()
+    
+    bouton_largeur = 170
+    bouton_hauteur = 40
     bouton = pygame.image.load("image/acier2.jpg")
-    bouton = pygame.transform.scale(bouton, (170, 40))
+    bouton = pygame.transform.scale(bouton, (bouton_largeur, bouton_hauteur))
+    # if bouton_largeur/2 <= souris[0] <= bouton_largeur/2+800 and bouton_hauteur/2 <= souris[1] <= bouton_hauteur/2+60: 
+    #     jouer = fenetre.blit(bouton, (800, 60))
+    #     arreter = fenetre.blit(bouton, (800, 140))
+    
+    #     jouer = police_survol.render('jouer' , True , BLANC)
+    #     fenetre.blit(jouer, (850, 70))
+    
+    #     arreter = police_survol.render("arrêter", True, BLANC)
+    #     fenetre.blit(arreter, (845, 150)) 
+          
+    # else: 
     jouer = fenetre.blit(bouton, (800, 60))
     arreter = fenetre.blit(bouton, (800, 140))
     
     jouer = police.render('jouer' , True , NOIR)
-    fenetre.blit(jouer, (840, 63))
+    fenetre.blit(jouer, (850, 70))
     
     arreter = police.render("arrêter", True, NOIR)
-    fenetre.blit(arreter, (810, 143))
+    fenetre.blit(arreter, (845, 150)) 
+    
+ 
 
 fichier_mots = "mots.txt"
 
