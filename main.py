@@ -109,43 +109,48 @@ def dessine_jinx(tour):
     if tour > 6:  # Jambe droite
         fenetre.blit(jinx_jambe_gauche, (480, 70))
 
-
 # Dessiner les lettres
 def affiche_texte(mot, devine):
     affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
     texte = police.render(affiche_mot, True, BLANC)
     fenetre.blit(texte, (300, 650))
-    
+   
 # Dessiner les boutons
-def affiche_bouton():
+def bouton_jouer():  
     # Détecte la postion de la souris en tuple [x, y]
-    # souris = pygame.mouse.get_pos()
-    
+    souris = pygame.mouse.get_pos()
+        
     bouton_largeur = 170
     bouton_hauteur = 40
     bouton = pygame.image.load("image/acier2.jpg")
     bouton = pygame.transform.scale(bouton, (bouton_largeur, bouton_hauteur))
-    # if bouton_largeur/2 <= souris[0] <= bouton_largeur/2+800 and bouton_hauteur/2 <= souris[1] <= bouton_hauteur/2+60: 
-    #     jouer = fenetre.blit(bouton, (800, 60))
-    #     arreter = fenetre.blit(bouton, (800, 140))
+       
+    if bouton_hauteur/2 + 780 <= souris[0] <= bouton_hauteur/2 + 940 and bouton_largeur/2 - 40 <= souris[1] <= bouton_largeur/2 + 20: 
+        jouer = fenetre.blit(bouton, (800, 60))
+        jouer = police_survol.render('jouer' , True , BLANC)
+        fenetre.blit(jouer, (850, 70)) 
+    else: 
+        jouer = fenetre.blit(bouton, (800, 60))        
+        jouer = police.render('jouer' , True , NOIR)
+        fenetre.blit(jouer, (850, 70))
+
+def bouton_arreter():
+    # Détecte la postion de la souris en tuple [x, y]
+    souris = pygame.mouse.get_pos()
+        
+    bouton_largeur = 170
+    bouton_hauteur = 40
+    bouton = pygame.image.load("image/acier2.jpg")
+    bouton = pygame.transform.scale(bouton, (bouton_largeur, bouton_hauteur)) 
     
-    #     jouer = police_survol.render('jouer' , True , BLANC)
-    #     fenetre.blit(jouer, (850, 70))
-    
-    #     arreter = police_survol.render("arrêter", True, BLANC)
-    #     fenetre.blit(arreter, (845, 150)) 
-          
-    # else: 
-    jouer = fenetre.blit(bouton, (800, 60))
-    arreter = fenetre.blit(bouton, (800, 140))
-    
-    jouer = police.render('jouer' , True , NOIR)
-    fenetre.blit(jouer, (850, 70))
-    
-    arreter = police.render("arrêter", True, NOIR)
-    fenetre.blit(arreter, (845, 150)) 
-    
- 
+    if bouton_hauteur/2 + 780 <= souris[0] <= bouton_hauteur/2 + 940 and bouton_largeur/2 + 60 <= souris[1] <= bouton_largeur/2 + 100:
+        arreter = fenetre.blit(bouton, (800, 140))
+        arreter = police_survol.render("arrêter", True, BLANC)
+        fenetre.blit(arreter, (845, 150)) 
+    else:
+        arreter = fenetre.blit(bouton, (800, 140))
+        arreter = police.render("arrêter", True, NOIR)
+        fenetre.blit(arreter, (845, 150)) 
 
 fichier_mots = "mots.txt"
 
@@ -170,7 +175,8 @@ def main():
 
         fenetre.blit(fond_ecran, (0, 0))
         dessine_potence(erreurs)
-        affiche_bouton()
+        bouton_jouer()
+        bouton_arreter()
         dessine_jinx(erreurs)
 
         # affiche les mauvaises lettres utilisées
