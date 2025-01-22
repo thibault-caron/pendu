@@ -109,7 +109,6 @@ def dessine_jinx(tour):
     if tour > 6:  # Jambe droite
         fenetre.blit(jinx_jambe_gauche, (480, 70))
 
-
 # Dessiner les lettres
 def affiche_texte(mot, devine):
     affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
