@@ -84,31 +84,75 @@ jinx_jambe_gauche = pygame.transform.scale(jinx_jambe_gauche, (353 / 4, 1276 / 4
 
 
 # Dessiner la potence
-def dessine_potence(tour):
-    if tour >0:
-        fenetre.blit(potence_base, (260, 430))
-        fenetre.blit(potence_verticale, (350, 30))
-        fenetre.blit(corde1, (500, 30))
-        fenetre.blit(potence_horizontale, (370, 30))
+def dessine_potence(tour, difficulte):
+    if difficulte == "facile":
+        if tour > 0:
+            fenetre.blit(potence_base, (260, 430))
+        if tour > 1:
+            fenetre.blit(potence_verticale, (350, 30))
+        if tour > 2:
+            fenetre.blit(potence_horizontale, (370, 30))
+        if tour > 3:
+            fenetre.blit(corde1, (500, 30))
+            fenetre.blit(potence_horizontale, (370, 30))
+            
+    elif difficulte == "moyen" or difficulte == "difficile":
+        if tour > 0:
+            fenetre.blit(potence_base, (260, 430))
+            fenetre.blit(potence_verticale, (350, 30))
+            fenetre.blit(corde1, (500, 30))
+            fenetre.blit(potence_horizontale, (370, 30))
 
 
 # Dessiner Jinx
-def dessine_jinx(tour):
-    if tour > 1:  # Tête
-        fenetre.blit(jinx_tete, (480, 70))
-    if tour > 2:  # Corps
-        fenetre.blit(jinx_corps, (480, 70))
-        fenetre.blit(corde2, (500, 30))
-        fenetre.blit(jinx_tete, (480, 70))
-    if tour > 3:  # Bras gauche
-        fenetre.blit(jinx_bras_droit, (480, 70))
-    if tour > 4:  # Bras droit
-        fenetre.blit(jinx_bras_gauche, (480, 70))
-    if tour > 5:  # Jambe gauche
-        fenetre.blit(jinx_jambe_droite, (480, 70))
-    if tour > 6:  # Jambe droite
-        fenetre.blit(jinx_jambe_gauche, (480, 70))
+def dessine_jinx(tour, difficulte):
+    if difficulte == "facile":
+        if tour > 4:  # Tête
+            fenetre.blit(jinx_tete, (480, 70))
+        if tour > 5:  # Corps
+            fenetre.blit(jinx_corps, (480, 70))
+            fenetre.blit(corde2, (500, 30))
+            fenetre.blit(jinx_tete, (480, 70))
+        if tour > 6:  # Bras gauche
+            fenetre.blit(jinx_bras_droit, (480, 70))
+        if tour > 7:  # Bras droit
+            fenetre.blit(jinx_bras_gauche, (480, 70))
+        if tour > 8:  # Jambe gauche
+            fenetre.blit(jinx_jambe_droite, (480, 70))
+        if tour > 9:  # Jambe droite
+            fenetre.blit(jinx_jambe_gauche, (480, 70))
+            
+    elif difficulte == "moyen":
+        if tour > 1:  # Tête
+            fenetre.blit(jinx_tete, (480, 70))
+        if tour > 2:  # Corps
+            fenetre.blit(jinx_corps, (480, 70))
+            fenetre.blit(corde2, (500, 30))
+            fenetre.blit(jinx_tete, (480, 70))
+        if tour > 3:  # Bras gauche
+            fenetre.blit(jinx_bras_droit, (480, 70))
+        if tour > 4:  # Bras droit
+            fenetre.blit(jinx_bras_gauche, (480, 70))
+        if tour > 5:  # Jambe gauche
+            fenetre.blit(jinx_jambe_droite, (480, 70))
+        if tour > 6:  # Jambe droite
+            fenetre.blit(jinx_jambe_gauche, (480, 70))
+            
+    elif difficulte == "difficile":
+        if tour > 1:  # Tête
+            fenetre.blit(jinx_tete, (480, 70))
+        if tour > 2:  # Corps
+            fenetre.blit(jinx_corps, (480, 70))
+            fenetre.blit(corde2, (500, 30))
+            fenetre.blit(jinx_tete, (480, 70))
+        if tour > 3:  # Bras
+            fenetre.blit(jinx_bras_droit, (480, 70))
+            fenetre.blit(jinx_bras_gauche, (480, 70))
+        if tour > 4:  # Jambes
+            fenetre.blit(jinx_jambe_droite, (480, 70))
+            fenetre.blit(jinx_jambe_gauche, (480, 70))
 
+            
 # Dessiner les lettres
 def affiche_texte(mot, devine):
     affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
@@ -166,6 +210,7 @@ def main():
     #     mots = file.read().split("\n")
     #     mot = random.choice(mots).upper()
     mot = "POWDER"
+    difficulte = "moyen"
     devine = []
     lettres_fausses = []
     erreurs = 0
@@ -174,10 +219,10 @@ def main():
     while en_cours:
 
         fenetre.blit(fond_ecran, (0, 0))
-        dessine_potence(erreurs)
+        dessine_potence(erreurs, difficulte)
         bouton_jouer()
         bouton_arreter()
-        dessine_jinx(erreurs)
+        dessine_jinx(erreurs, difficulte)
 
         # affiche les mauvaises lettres utilisées
         liste_de_faux = police.render(f"mauvaises lettres: {' '.join(map(str, lettres_fausses))}", True, ROUGE)
@@ -200,7 +245,7 @@ def main():
                             erreurs += 1
 
         # Vérifications de fin de jeu
-        if erreurs > 6:
+        if erreurs > 9 and difficulte == "facile" or erreurs > 6 and difficulte == "moyen" or erreurs > 4 and difficulte == "difficile":
             accepte_lettres = False
             text = police.render("Perdu !", True, ROUGE)
             fenetre.blit(text, (400, 100))
