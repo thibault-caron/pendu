@@ -86,28 +86,29 @@ jinx_jambe_gauche = pygame.transform.scale(jinx_jambe_gauche, (353 / 4, 1276 / 4
 
 
 # Dessiner la potence
-def dessine_potence():
-    fenetre.blit(potence_base, (260, 430))
-    fenetre.blit(potence_verticale, (350, 30))
-    fenetre.blit(corde1, (500, 30))
-    fenetre.blit(potence_horizontale, (370, 30))
+def dessine_potence(tour):
+    if tour >0:
+        fenetre.blit(potence_base, (260, 430))
+        fenetre.blit(potence_verticale, (350, 30))
+        fenetre.blit(corde1, (500, 30))
+        fenetre.blit(potence_horizontale, (370, 30))
 
 
 # Dessiner Jinx
 def dessine_jinx(tour):
-    if tour > 0:  # Tête
+    if tour > 1:  # Tête
         fenetre.blit(jinx_tete, (480, 70))
-    if tour > 1:  # Corps
+    if tour > 2:  # Corps
         fenetre.blit(jinx_corps, (480, 70))
         fenetre.blit(corde2, (500, 30))
         fenetre.blit(jinx_tete, (480, 70))
-    if tour > 2:  # Bras gauche
+    if tour > 3:  # Bras gauche
         fenetre.blit(jinx_bras_droit, (480, 70))
-    if tour > 3:  # Bras droit
+    if tour > 4:  # Bras droit
         fenetre.blit(jinx_bras_gauche, (480, 70))
-    if tour > 4:  # Jambe gauche
+    if tour > 5:  # Jambe gauche
         fenetre.blit(jinx_jambe_droite, (480, 70))
-    if tour > 5:  # Jambe droite
+    if tour > 6:  # Jambe droite
         fenetre.blit(jinx_jambe_gauche, (480, 70))
 
 
@@ -147,10 +148,11 @@ def main():
     lettres_fausses = []
     erreurs = 0
     en_cours = True
+    accepte_lettres = True
     while en_cours:
 
         fenetre.blit(fond_ecran, (0, 0))
-        dessine_potence()
+        dessine_potence(erreurs)
         affiche_bouton()
         dessine_jinx(erreurs)
 
@@ -163,20 +165,24 @@ def main():
         for evenement in pygame.event.get():
             if evenement.type == pygame.QUIT:
                 en_cours = False
-            if evenement.type == pygame.KEYDOWN:
-                if evenement.unicode.isalpha():
-                    lettre = evenement.unicode.upper()
-                    if lettre in mot and lettre not in devine:
-                        devine.append(lettre)
-                    elif lettre not in mot and lettre not in lettres_fausses:
-                        lettres_fausses.append(lettre)
-                        erreurs += 1
+
+            elif evenement.type == pygame.KEYDOWN:
+                if accepte_lettres:
+                    if evenement.unicode.isalpha():
+                        lettre = evenement.unicode.upper()
+                        if lettre in mot and lettre not in devine:
+                            devine.append(lettre)
+                        elif lettre not in mot and lettre not in lettres_fausses:
+                            lettres_fausses.append(lettre)
+                            erreurs += 1
 
         # Vérifications de fin de jeu
-        if erreurs > 5:
+        if erreurs > 6:
+            accepte_lettres = False
             text = police.render("Perdu !", True, ROUGE)
             fenetre.blit(text, (400, 100))
         elif all(lettre in devine for lettre in mot):
+            accepte_lettres = False
             text = police.render("Gagné !", True, VERT)
             fenetre.blit(text, (400, 100))
 
