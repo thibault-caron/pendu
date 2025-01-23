@@ -262,6 +262,9 @@ def main():
         
         if bouton_arreter(affiche):
             affiche = False
+            devine = []
+            lettres_fausses = []
+            erreurs = 0
             
         affiche_mauvaises_lettres(affiche, lettres_fausses)
         dessine_jinx(erreurs, difficulte)
