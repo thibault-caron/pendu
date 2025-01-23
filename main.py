@@ -198,6 +198,22 @@ def bouton_arreter():
 
 fichier_mots = "mots.txt"
 
+def verifie_fin(mot, devine, erreurs, difficulte, accepte_lettres):
+    # Vérifications de fin de jeu
+    if erreurs > 9 and difficulte == "facile" or erreurs > 6 and difficulte == "moyen" or erreurs > 4 and difficulte == "difficile":
+        accepte_lettres = False
+        text = police.render("Perdu !", True, ROUGE)
+        fenetre.blit(text, (400, 100))
+        text = police.render(f"mot à trouver: {mot}", True, ROUGE)
+        fenetre.blit(text, (400, 200))
+
+    elif all(lettre in devine for lettre in mot):
+        accepte_lettres = False
+        text = police.render("Gagné !", True, VERT)
+        fenetre.blit(text, (400, 100))
+
+    return accepte_lettres
+
 
 def main():
     """"""
@@ -240,21 +256,7 @@ def main():
                             lettres_fausses.append(lettre)
                             erreurs += 1
 
-        # Vérifications de fin de jeu
-        if erreurs > 9 and difficulte == "facile" or erreurs > 6 and difficulte == "moyen" or erreurs > 4 and difficulte == "difficile":
-            accepte_lettres = False
-            text = police.render("Perdu !", True, ROUGE)
-            fenetre.blit(text, (400, 100))
-            text = police.render(f"mot à trouver: {mot}", True, ROUGE)
-            fenetre.blit(text, (400, 200))
-        elif all(lettre in devine for lettre in mot):
-            accepte_lettres = False
-            text = police.render("Gagné !", True, VERT)
-            fenetre.blit(text, (400, 100))
-
-            # if evenement.type == pygame.KEYDOWN:
-                # if evenement.key == pygame.K_r:
-                    # couleur = ROUGE
+        verifie_fin(mot, devine, erreurs, difficulte, accepte_lettres)
 
         pygame.display.flip()
         FPS.tick(60)
