@@ -197,7 +197,16 @@ def bouton_arreter():
     else:
         arreter = fenetre.blit(bouton, (800, 140))
         arreter = police.render("arrêter", True, NOIR)
-        fenetre.blit(arreter, (845, 150)) 
+        fenetre.blit(arreter, (845, 150))
+        
+def affiche_mauvaises_lettres(affiche):
+    if affiche == True: 
+        # affiche les mauvaises lettres utilisées
+        lettres_fausses = []
+        liste_de_faux = police.render(f"mauvaises lettres: {' '.join(map(str, lettres_fausses))}", True, ROUGE)
+        fenetre.blit(liste_de_faux, (50, 550))
+    else:
+        affiche == False
 
 fichier_mots = "mots.txt"
 
@@ -223,12 +232,7 @@ def main():
         bouton_jouer()
         bouton_arreter()
         dessine_jinx(erreurs, difficulte)
-
-        # affiche les mauvaises lettres utilisées
-        liste_de_faux = police.render(f"mauvaises lettres: {' '.join(map(str, lettres_fausses))}", True, ROUGE)
-        fenetre.blit(liste_de_faux, (50, 550))
-
-        affiche_texte(mot, devine, affiche= True)
+        affiche_texte(mot, devine, affiche)
 
         for evenement in pygame.event.get():
             if evenement.type == pygame.QUIT:
