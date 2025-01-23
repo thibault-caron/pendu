@@ -41,6 +41,8 @@ FPS = pygame.time.Clock()
 # Niveau de difficulté
 etat_difficulte = "normal"
 
+fichier_mots = "mots.txt"
+
 # AFFICHAGE DES OBJETS #
 
 # Ajouter une image de fond
@@ -157,18 +159,17 @@ def dessine_jinx(tour):
 
             
 # Dessiner les lettres
-def affiche_texte(mot, devine):
-    # if affiche == True:
-    affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
-    texte = police.render(affiche_mot, True, BLANC)
-    fenetre.blit(texte, (300, 650))
+def affiche_texte(mot, devine, affiche):
+    if affiche == True:
+        affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
+        texte = police.render(affiche_mot, True, BLANC)
+        fenetre.blit(texte, (300, 650))
         
    
 # Dessiner les boutons
-def bouton_jouer(mot, devine, lettres_fausses, erreurs, accepte_lettres):  
+def bouton_jouer(mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche):  
     # Détecte la postion de la souris en tuple [x, y]
     souris = pygame.mouse.get_pos()
-    clic = False
         
     bouton_largeur = 170
     bouton_hauteur = 40
@@ -193,12 +194,13 @@ def bouton_jouer(mot, devine, lettres_fausses, erreurs, accepte_lettres):
                 lettres_fausses = []
                 erreurs = 0
                 accepte_lettres = True
+                affiche = True
     else: 
         jouer = fenetre.blit(bouton, (800, 60))        
         jouer = police.render('jouer' , True , NOIR)
         fenetre.blit(jouer, (850, 70))
         
-    return mot, devine, lettres_fausses, erreurs, accepte_lettres
+    return mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche
         
 
 def bouton_arreter():
@@ -259,12 +261,12 @@ def bouton_difficile():
         fenetre.blit(texte, (840, 220))
         
         
-def affiche_mauvaises_lettres(lettres_fausses):
+def affiche_mauvaises_lettres(lettres_fausses, affiche):
     # affiche les mauvaises lettres utilisées
-    liste_de_faux = police.render(f"mauvaises lettres: {' '.join(map(str, lettres_fausses))}", True, ROUGE)
-    fenetre.blit(liste_de_faux, (50, 550))
+    if affiche == True:
+        liste_de_faux = police.render(f"mauvaises lettres: {' '.join(map(str, lettres_fausses))}", True, ROUGE)
+        fenetre.blit(liste_de_faux, (50, 550))
 
-fichier_mots = "mots.txt"
 
 def verifie_fin(mot, devine, erreurs, accepte_lettres):
     # Vérifications de fin de jeu
@@ -282,13 +284,13 @@ def verifie_fin(mot, devine, erreurs, accepte_lettres):
 
     return accepte_lettres
 
-def partie(mot, devine, lettres_fausses, erreurs, accepte_lettres):
+def partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche):
 
     dessine_potence(erreurs)
     dessine_jinx(erreurs)
 
-    affiche_mauvaises_lettres(lettres_fausses)
-    affiche_texte(mot, devine)
+    affiche_mauvaises_lettres(lettres_fausses, affiche)
+    affiche_texte(mot, devine, affiche)
 
     accepte_lettres = verifie_fin(mot, devine, erreurs, accepte_lettres)
 
@@ -299,7 +301,7 @@ def main():
     """"""
 
     en_cours = True
-    # affiche = False
+    affiche = True
     mot = "XXXX"
     devine = []
     lettres_fausses = []
@@ -310,12 +312,19 @@ def main():
 
         fenetre.blit(fond_ecran, (0, 0))
         
-        mot, devine, lettres_fausses, erreurs, accepte_lettres = bouton_jouer(mot, devine, lettres_fausses, erreurs, accepte_lettres)
+        mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche = bouton_jouer(mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche)
 
         if mot != "XXXX":
-            partie(mot, devine, lettres_fausses, erreurs, accepte_lettres)
+            accepte_lettres = partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche)
 
-        bouton_arreter()
+        if bouton_arreter():
+            affiche = False
+            devine = []
+            lettres_fausses = []
+            erreurs = 0
+            accepte_lettres = True
+            mot = "XXXX"
+            
         bouton_difficile()
 
         text = police.render(f"mot: {mot}", True, VERT)
