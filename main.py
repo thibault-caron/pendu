@@ -282,15 +282,15 @@ def verifie_fin(mot, devine, erreurs, accepte_lettres):
 
     return accepte_lettres
 
-def partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, difficulte):
+def partie(mot, devine, lettres_fausses, erreurs, accepte_lettres):
 
-    dessine_potence(erreurs, difficulte)
-    dessine_jinx(erreurs, difficulte)
+    dessine_potence(erreurs)
+    dessine_jinx(erreurs)
 
     affiche_mauvaises_lettres(lettres_fausses)
     affiche_texte(mot, devine)
 
-    accepte_lettres = verifie_fin(mot, devine, erreurs, difficulte, accepte_lettres)
+    accepte_lettres = verifie_fin(mot, devine, erreurs, accepte_lettres)
 
     return accepte_lettres
 
@@ -298,7 +298,6 @@ def partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, difficulte):
 def main():
     """"""
 
-    difficulte = "moyen"
     en_cours = True
     # affiche = False
     mot = "XXXX"
@@ -310,18 +309,14 @@ def main():
     while en_cours:
 
         fenetre.blit(fond_ecran, (0, 0))
-        dessine_potence(erreurs)
-        if bouton_jouer(affiche):
-            affiche = True
-        
-        bouton_difficile()   
-
-
         
         mot, devine, lettres_fausses, erreurs, accepte_lettres = bouton_jouer(mot, devine, lettres_fausses, erreurs, accepte_lettres)
 
         if mot != "XXXX":
-            partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, difficulte)
+            partie(mot, devine, lettres_fausses, erreurs, accepte_lettres)
+
+        bouton_arreter()
+        bouton_difficile()
 
         text = police.render(f"mot: {mot}", True, VERT)
         fenetre.blit(text, (400, 200)) # pour test, affiche mot
