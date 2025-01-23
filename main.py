@@ -9,8 +9,9 @@ Sortie :
 
 import pygame
 from pygame.locals import *
-import sys
 import random
+
+from fonctions.ajouter_mot import ajouter_mot
 
 # Initialisation de Pygame
 pygame.init()
@@ -183,12 +184,10 @@ def bouton_jouer(mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche
         
         for evenement in pygame.event.get():
             if evenement.type == pygame.MOUSEBUTTONDOWN:
-                # clic = True
                 # assigne un mot à trouver depuis le fichier 'mot.txt'
                 with open("./mots.txt", "r") as file:
                     mots = file.read().split("\n")
                     mot = random.choice(mots).upper()
-                # mot = "POWDER"
 
                 devine = []
                 lettres_fausses = []
@@ -241,10 +240,10 @@ def bouton_difficile():
     bouton = pygame.transform.scale(bouton, (bouton_largeur, bouton_hauteur))
 
     # Détection de la souris sur le bouton
-    if 800 <= souris[0] <= 800 + bouton_largeur and 210 <= souris[1] <= 210 + bouton_hauteur:
-        fenetre.blit(bouton, (800, 210))
+    if 800 <= souris[0] <= 800 + bouton_largeur and 220 <= souris[1] <= 240 + bouton_hauteur:
+        fenetre.blit(bouton, (800, 220))
         texte = police_survol.render(etat_difficulte, True, BLANC)
-        fenetre.blit(texte, (840, 220))
+        fenetre.blit(texte, (840, 230))
 
         # Vérification du clic
         for evenement in pygame.event.get():
@@ -256,9 +255,34 @@ def bouton_difficile():
                 elif etat_difficulte == "facile":
                     etat_difficulte = "normal"
     else:
-        fenetre.blit(bouton, (800, 210))
+        fenetre.blit(bouton, (800, 220))
         texte = police.render(etat_difficulte, True, NOIR)
-        fenetre.blit(texte, (840, 220))
+        fenetre.blit(texte, (840, 230))
+        
+def bouton_ajout():
+        # Détecte la postion de la souris en tuple [x, y]
+    souris = pygame.mouse.get_pos()
+        
+    bouton_largeur = 170
+    bouton_hauteur = 40
+    bouton = pygame.image.load("image/acier2.jpg")
+    bouton = pygame.transform.scale(bouton, (bouton_largeur, bouton_hauteur))
+       
+    if bouton_hauteur/2 + 780 <= souris[0] <= bouton_hauteur/2 + 940 and bouton_largeur/2 + 210 <= souris[1] <= bouton_largeur/2 + 270: 
+        jouer = fenetre.blit(bouton, (800, 300))
+        jouer = police_survol.render('Ajout mot' , True , BLANC)
+        fenetre.blit(jouer, (825, 310))
+        
+        for evenement in pygame.event.get():
+            if evenement.type == pygame.MOUSEBUTTONDOWN:
+                # permet d'ajouter un mot dans le fichier 'mot.txt'
+                mot_dico = ""
+                ajouter_mot(fichier_mots, mot_dico)
+
+    else: 
+        jouer = fenetre.blit(bouton, (800, 300))        
+        jouer = police.render('Ajout mot' , True , NOIR)
+        fenetre.blit(jouer, (825, 310))    
         
         
 def affiche_mauvaises_lettres(lettres_fausses, affiche):
@@ -326,6 +350,8 @@ def main():
             mot = "XXXX"
             
         bouton_difficile()
+        
+        bouton_ajout()
 
         text = police.render(f"mot: {mot}", True, VERT)
         fenetre.blit(text, (400, 200)) # pour test, affiche mot

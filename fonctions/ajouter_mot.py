@@ -1,10 +1,3 @@
-def ajouter_mot(fichier, mot):
-    """
-    Ajout un nouveau mot au fichier texte contenant la liste de mots du jeu.
-    :param fichier: Fichier texte contenant la liste de mots du jeu.
-    :param mot: Mot à ajouter au fichier.
-    :return: ∅
-    """
     def existence_mot(nouveau_mot):
         """
         Vérifie si le mot est déjà présent dans le fichier.
@@ -27,3 +20,4 @@ def ajouter_mot(fichier, mot):
 
 # fichier_mots = "mots.txt"
 # ajouter_mot(fichier_mots, mot="anaconda")
+
