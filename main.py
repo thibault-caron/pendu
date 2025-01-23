@@ -256,7 +256,7 @@ def main():
                             lettres_fausses.append(lettre)
                             erreurs += 1
 
-        verifie_fin(mot, devine, erreurs, difficulte, accepte_lettres)
+        accepte_lettres = verifie_fin(mot, devine, erreurs, difficulte, accepte_lettres)
 
         pygame.display.flip()
         FPS.tick(60)
