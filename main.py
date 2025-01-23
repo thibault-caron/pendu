@@ -39,9 +39,6 @@ MAGENTA = (255, 0, 255)
 # Horloge
 FPS = pygame.time.Clock()
 
-# Niveau de difficulté
-etat_difficulte = "normal"
-
 fichier_mots = "mots.txt"
 
 # AFFICHAGE DES OBJETS #
@@ -90,7 +87,7 @@ jinx_jambe_gauche = pygame.transform.scale(jinx_jambe_gauche, (353 / 4, 1276 / 4
 
 
 # Dessiner la potence
-def dessine_potence(tour):
+def dessine_potence(tour, etat_difficulte):
     if etat_difficulte == "facile":
         if tour > 0:
             fenetre.blit(potence_base, (260, 430))
@@ -111,7 +108,7 @@ def dessine_potence(tour):
 
 
 # Dessiner Jinx
-def dessine_jinx(tour):
+def dessine_jinx(tour, etat_difficulte):
     if etat_difficulte == "facile":
         if tour > 4:  # Tête
             fenetre.blit(jinx_tete, (480, 70))
@@ -228,8 +225,8 @@ def bouton_arreter():
     return clic
 
 
-def bouton_difficile():
-    global etat_difficulte  # Utilisation de la variable globale
+def bouton_difficile(etat_difficulte):
+
     souris = pygame.mouse.get_pos()
     bouton_largeur = 170
     bouton_hauteur = 40
@@ -255,6 +252,9 @@ def bouton_difficile():
         fenetre.blit(bouton, (800, 220))
         texte = police.render(etat_difficulte, True, NOIR)
         fenetre.blit(texte, (840, 230))
+        
+    return etat_difficulte
+
         
 def bouton_ajout():
         # Détecte la postion de la souris en tuple [x, y]
@@ -304,7 +304,7 @@ def affiche_mauvaises_lettres(lettres_fausses, affiche):
         fenetre.blit(liste_de_faux, (50, 550))
 
 
-def verifie_fin(mot, devine, erreurs, accepte_lettres):
+def verifie_fin(mot, devine, erreurs, accepte_lettres, etat_difficulte):
     # Vérifications de fin de jeu
     if erreurs > 9 and etat_difficulte == "facile" or erreurs > 6 and etat_difficulte == "normal" or erreurs > 4 and etat_difficulte == "difficile":
         accepte_lettres = False
@@ -320,15 +320,15 @@ def verifie_fin(mot, devine, erreurs, accepte_lettres):
 
     return accepte_lettres
 
-def partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche):
+def partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche, etat_difficulte):
 
-    dessine_potence(erreurs)
-    dessine_jinx(erreurs)
+    dessine_potence(erreurs, etat_difficulte)
+    dessine_jinx(erreurs, etat_difficulte)
 
     affiche_mauvaises_lettres(lettres_fausses, affiche)
     affiche_texte(mot, devine, affiche)
 
-    accepte_lettres = verifie_fin(mot, devine, erreurs, accepte_lettres)
+    accepte_lettres = verifie_fin(mot, devine, erreurs, accepte_lettres, etat_difficulte)
 
     return accepte_lettres
 
@@ -343,6 +343,7 @@ def main():
     lettres_fausses = []
     erreurs = 0
     accepte_lettres = False
+    etat_difficulte = "normal"
 
     while en_cours:
 
@@ -351,7 +352,7 @@ def main():
         mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche = bouton_jouer(mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche)
 
         if mot != "XXXX":
-            accepte_lettres = partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche)
+            accepte_lettres = partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche, etat_difficulte)
 
         if bouton_arreter():
             affiche = False
@@ -361,7 +362,7 @@ def main():
             accepte_lettres = True
             mot = "XXXX"
             
-        bouton_difficile()
+        etat_difficulte = bouton_difficile(etat_difficulte)
         
         bouton_ajout()
 
