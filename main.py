@@ -214,10 +214,9 @@ def bouton_arreter(affiche):
     return clic
         
         
-def affiche_mauvaises_lettres(affiche):
+def affiche_mauvaises_lettres(affiche, lettres_fausses):
     if affiche == True: 
         # affiche les mauvaises lettres utilisées
-        lettres_fausses = []
         liste_de_faux = police.render(f"mauvaises lettres: {' '.join(map(str, lettres_fausses))}", True, ROUGE)
         fenetre.blit(liste_de_faux, (50, 550))
 
@@ -264,6 +263,7 @@ def main():
         if bouton_arreter(affiche):
             affiche = False
             
+        affiche_mauvaises_lettres(affiche, lettres_fausses)
         dessine_jinx(erreurs, difficulte)
         affiche_texte(mot, devine, affiche)
 
