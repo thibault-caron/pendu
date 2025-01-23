@@ -154,15 +154,15 @@ def dessine_jinx(tour, difficulte):
 
             
 # Dessiner les lettres
-def affiche_texte(mot, devine, affiche):
-    if affiche == True:
-        affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
-        texte = police.render(affiche_mot, True, BLANC)
-        fenetre.blit(texte, (300, 650))
+def affiche_texte(mot, devine):
+    # if affiche == True:
+    affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
+    texte = police.render(affiche_mot, True, BLANC)
+    fenetre.blit(texte, (300, 650))
         
    
 # Dessiner les boutons
-def bouton_jouer(affiche):  
+def bouton_jouer(mot, devine, lettres_fausses, erreurs, accepte_lettres):  
     # Détecte la postion de la souris en tuple [x, y]
     souris = pygame.mouse.get_pos()
     clic = False
@@ -179,16 +179,26 @@ def bouton_jouer(affiche):
         
         for evenement in pygame.event.get():
             if evenement.type == pygame.MOUSEBUTTONDOWN:
-                clic = True
+                # clic = True
+                # assigne un mot à trouver depuis le fichier 'mot.txt'
+                with open("./mots.txt", "r") as file:
+                    mots = file.read().split("\n")
+                    mot = random.choice(mots).upper()
+                # mot = "POWDER"
+
+                devine = []
+                lettres_fausses = []
+                erreurs = 0
+                accepte_lettres = True
     else: 
         jouer = fenetre.blit(bouton, (800, 60))        
         jouer = police.render('jouer' , True , NOIR)
         fenetre.blit(jouer, (850, 70))
         
-    return clic
+    return mot, devine, lettres_fausses, erreurs, accepte_lettres
         
 
-def bouton_arreter(affiche):
+def bouton_arreter():
     # Détecte la postion de la souris en tuple [x, y]
     souris = pygame.mouse.get_pos()
     clic = False
@@ -214,11 +224,10 @@ def bouton_arreter(affiche):
     return clic
         
         
-def affiche_mauvaises_lettres(affiche, lettres_fausses):
-    if affiche == True: 
-        # affiche les mauvaises lettres utilisées
-        liste_de_faux = police.render(f"mauvaises lettres: {' '.join(map(str, lettres_fausses))}", True, ROUGE)
-        fenetre.blit(liste_de_faux, (50, 550))
+def affiche_mauvaises_lettres(lettres_fausses):
+    # affiche les mauvaises lettres utilisées
+    liste_de_faux = police.render(f"mauvaises lettres: {' '.join(map(str, lettres_fausses))}", True, ROUGE)
+    fenetre.blit(liste_de_faux, (50, 550))
 
 fichier_mots = "mots.txt"
 
@@ -238,53 +247,63 @@ def verifie_fin(mot, devine, erreurs, difficulte, accepte_lettres):
 
     return accepte_lettres
 
+def partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, difficulte):
+
+    dessine_potence(erreurs, difficulte)
+    dessine_jinx(erreurs, difficulte)
+
+    affiche_mauvaises_lettres(lettres_fausses)
+    affiche_texte(mot, devine)
+
+    accepte_lettres = verifie_fin(mot, devine, erreurs, difficulte, accepte_lettres)
+
+    return accepte_lettres
+
 
 def main():
     """"""
-    # assigne un mot à trouver depuis le fichier 'mot.txt'
-    # with open("./mots.txt", "r") as file:
-    #     mots = file.read().split("\n")
-    #     mot = random.choice(mots).upper()
-    mot = "POWDER"
     difficulte = "moyen"
+    en_cours = True
+    # affiche = False
+    mot = "XXXX"
     devine = []
     lettres_fausses = []
     erreurs = 0
-    en_cours = True
-    accepte_lettres = True
-    affiche = False
+    accepte_lettres = False
+
     while en_cours:
 
         fenetre.blit(fond_ecran, (0, 0))
-        dessine_potence(erreurs, difficulte)
-        if bouton_jouer(affiche):
-            affiche = True
         
-        if bouton_arreter(affiche):
-            affiche = False
-            devine = []
-            lettres_fausses = []
-            erreurs = 0
-            
-        affiche_mauvaises_lettres(affiche, lettres_fausses)
-        dessine_jinx(erreurs, difficulte)
-        affiche_texte(mot, devine, affiche)
+        mot, devine, lettres_fausses, erreurs, accepte_lettres = bouton_jouer(mot, devine, lettres_fausses, erreurs, accepte_lettres)
+
+        if mot != "XXXX":
+            partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, difficulte)
+        
+        # if bouton_arreter():
+        #     affiche = False
+        #     devine = []
+        #     lettres_fausses = []
+        #     erreurs = 0
+        
+        # mot, accepte_lettres = partie(devine, lettres_fausses, erreurs, accepte_lettres, difficulte, affiche)
+
+        text = police.render(f"mot: {mot}", True, VERT)
+        fenetre.blit(text, (400, 200)) # pour test, affiche mot
 
         for evenement in pygame.event.get():
             if evenement.type == pygame.QUIT:
                 en_cours = False
 
-            elif evenement.type == pygame.KEYDOWN:
-                if accepte_lettres:
-                    if evenement.unicode.isalpha():
-                        lettre = evenement.unicode.upper()
-                        if lettre in mot and lettre not in devine:
-                            devine.append(lettre)
-                        elif lettre not in mot and lettre not in lettres_fausses:
-                            lettres_fausses.append(lettre)
-                            erreurs += 1
-
-        accepte_lettres = verifie_fin(mot, devine, erreurs, difficulte, accepte_lettres)
+            elif evenement.type == pygame.KEYDOWN and "mot" is not "XXXX":
+                    if accepte_lettres:
+                        if evenement.unicode.isalpha():
+                            lettre = evenement.unicode.upper()
+                            if lettre in mot and lettre not in devine:
+                                devine.append(lettre)
+                            elif lettre not in mot and lettre not in lettres_fausses:
+                                lettres_fausses.append(lettre)
+                                erreurs += 1
 
         pygame.display.flip()
         FPS.tick(60)
