@@ -154,15 +154,18 @@ def dessine_jinx(tour, difficulte):
 
             
 # Dessiner les lettres
-def affiche_texte(mot, devine):
-    affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
-    texte = police.render(affiche_mot, True, BLANC)
-    fenetre.blit(texte, (300, 650))
+def affiche_texte(mot, devine, affiche):
+    if affiche == True:
+        affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
+        texte = police.render(affiche_mot, True, BLANC)
+        fenetre.blit(texte, (300, 650))
+        
    
 # Dessiner les boutons
-def bouton_jouer():  
+def bouton_jouer(affiche):  
     # Détecte la postion de la souris en tuple [x, y]
     souris = pygame.mouse.get_pos()
+    clic = False
         
     bouton_largeur = 170
     bouton_hauteur = 40
@@ -172,15 +175,23 @@ def bouton_jouer():
     if bouton_hauteur/2 + 780 <= souris[0] <= bouton_hauteur/2 + 940 and bouton_largeur/2 - 40 <= souris[1] <= bouton_largeur/2 + 20: 
         jouer = fenetre.blit(bouton, (800, 60))
         jouer = police_survol.render('jouer' , True , BLANC)
-        fenetre.blit(jouer, (850, 70)) 
+        fenetre.blit(jouer, (850, 70))
+        
+        for evenement in pygame.event.get():
+            if evenement.type == pygame.MOUSEBUTTONDOWN:
+                clic = True
     else: 
         jouer = fenetre.blit(bouton, (800, 60))        
         jouer = police.render('jouer' , True , NOIR)
         fenetre.blit(jouer, (850, 70))
+        
+    return clic
+        
 
-def bouton_arreter():
+def bouton_arreter(affiche):
     # Détecte la postion de la souris en tuple [x, y]
     souris = pygame.mouse.get_pos()
+    clic = False
         
     bouton_largeur = 170
     bouton_hauteur = 40
@@ -190,17 +201,27 @@ def bouton_arreter():
     if bouton_hauteur/2 + 780 <= souris[0] <= bouton_hauteur/2 + 940 and bouton_largeur/2 + 60 <= souris[1] <= bouton_largeur/2 + 100:
         arreter = fenetre.blit(bouton, (800, 140))
         arreter = police_survol.render("arrêter", True, BLANC)
-        fenetre.blit(arreter, (845, 150)) 
+        fenetre.blit(arreter, (845, 150))
+        
+        for evenement in pygame.event.get():
+            if evenement.type == pygame.MOUSEBUTTONDOWN:
+                clic = True
     else:
         arreter = fenetre.blit(bouton, (800, 140))
         arreter = police.render("arrêter", True, NOIR)
-        fenetre.blit(arreter, (845, 150)) 
+        fenetre.blit(arreter, (845, 150))
+    
+    return clic
+        
+        
+def affiche_mauvaises_lettres(affiche):
+    if affiche == True: 
+        # affiche les mauvaises lettres utilisées
+        lettres_fausses = []
+        liste_de_faux = police.render(f"mauvaises lettres: {' '.join(map(str, lettres_fausses))}", True, ROUGE)
+        fenetre.blit(liste_de_faux, (50, 550))
 
 fichier_mots = "mots.txt"
-
-touches_alphabet = {K_a: "a", K_b: "b", K_c: "c", K_d: "d", K_e: "e", K_f: "f", K_g: "g", K_h: "h", K_i: "i", K_j: "j",
-                    K_k: "k", K_l: "l", K_m: "m", K_n: "n", K_o: "o", K_p: "p", K_q: "q", K_r: "r", K_s: "s", K_t: "t",
-                    K_u: "u", K_v: "v", K_w: "w", K_x: "x", K_y: "y", K_z: "z"}
 
 
 def main():
@@ -216,19 +237,19 @@ def main():
     erreurs = 0
     en_cours = True
     accepte_lettres = True
+    affiche = False
     while en_cours:
 
         fenetre.blit(fond_ecran, (0, 0))
         dessine_potence(erreurs, difficulte)
-        bouton_jouer()
-        bouton_arreter()
+        if bouton_jouer(affiche):
+            affiche = True
+        
+        if bouton_arreter(affiche):
+            affiche = False
+            
         dessine_jinx(erreurs, difficulte)
-
-        # affiche les mauvaises lettres utilisées
-        liste_de_faux = police.render(f"mauvaises lettres: {' '.join(map(str, lettres_fausses))}", True, ROUGE)
-        fenetre.blit(liste_de_faux, (50, 550))
-
-        affiche_texte(mot, devine)
+        affiche_texte(mot, devine, affiche)
 
         for evenement in pygame.event.get():
             if evenement.type == pygame.QUIT:
@@ -245,7 +266,7 @@ def main():
                             erreurs += 1
 
         # Vérifications de fin de jeu
-        if erreurs > 6 and difficulte == "moyen":
+        if erreurs > 9 and difficulte == "facile" or erreurs > 6 and difficulte == "moyen" or erreurs > 4 and difficulte == "difficile":
             accepte_lettres = False
             text = police.render("Perdu !", True, ROUGE)
             fenetre.blit(text, (400, 100))
