@@ -1,4 +1,4 @@
-def ajouter_mot(fichier, mot):
+def ajouter_mot(fichier, nouveau_mot):
     """
     Ajout un nouveau mot au fichier texte contenant la liste de mots du jeu.
     :param fichier: Fichier texte contenant la liste de mots du jeu.
@@ -6,4 +6,4 @@ def ajouter_mot(fichier, mot):
     :return: ∅
     """
     with open(fichier, "a") as mots_pendu:
-        mots_pendu.write(f"\n{mot}")
+        mots_pendu.write(f"\n{nouveau_mot}")
