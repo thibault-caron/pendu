@@ -179,7 +179,6 @@ def bouton_jouer(affiche):
         
         for evenement in pygame.event.get():
             if evenement.type == pygame.MOUSEBUTTONDOWN:
-                affiche = True
                 clic = True
     else: 
         jouer = fenetre.blit(bouton, (800, 60))        
@@ -206,7 +205,6 @@ def bouton_arreter(affiche):
         
         for evenement in pygame.event.get():
             if evenement.type == pygame.MOUSEBUTTONDOWN:
-                affiche = True
                 clic = True
     else:
         arreter = fenetre.blit(bouton, (800, 140))
