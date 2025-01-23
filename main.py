@@ -38,6 +38,9 @@ MAGENTA = (255, 0, 255)
 # Horloge
 FPS = pygame.time.Clock()
 
+# Niveau de difficulté
+etat_difficulte = "normal"
+
 # AFFICHAGE DES OBJETS #
 
 # Ajouter une image de fond
@@ -84,8 +87,8 @@ jinx_jambe_gauche = pygame.transform.scale(jinx_jambe_gauche, (353 / 4, 1276 / 4
 
 
 # Dessiner la potence
-def dessine_potence(tour, difficulte):
-    if difficulte == "facile":
+def dessine_potence(tour):
+    if etat_difficulte == "facile":
         if tour > 0:
             fenetre.blit(potence_base, (260, 430))
         if tour > 1:
@@ -96,7 +99,7 @@ def dessine_potence(tour, difficulte):
             fenetre.blit(corde1, (500, 30))
             fenetre.blit(potence_horizontale, (370, 30))
             
-    elif difficulte == "moyen" or difficulte == "difficile":
+    elif etat_difficulte == "moyen" or etat_difficulte == "difficile":
         if tour > 0:
             fenetre.blit(potence_base, (260, 430))
             fenetre.blit(potence_verticale, (350, 30))
@@ -105,8 +108,8 @@ def dessine_potence(tour, difficulte):
 
 
 # Dessiner Jinx
-def dessine_jinx(tour, difficulte):
-    if difficulte == "facile":
+def dessine_jinx(tour):
+    if etat_difficulte == "facile":
         if tour > 4:  # Tête
             fenetre.blit(jinx_tete, (480, 70))
         if tour > 5:  # Corps
@@ -122,7 +125,7 @@ def dessine_jinx(tour, difficulte):
         if tour > 9:  # Jambe droite
             fenetre.blit(jinx_jambe_gauche, (480, 70))
             
-    elif difficulte == "moyen":
+    elif etat_difficulte == "moyen":
         if tour > 1:  # Tête
             fenetre.blit(jinx_tete, (480, 70))
         if tour > 2:  # Corps
@@ -138,7 +141,7 @@ def dessine_jinx(tour, difficulte):
         if tour > 6:  # Jambe droite
             fenetre.blit(jinx_jambe_gauche, (480, 70))
             
-    elif difficulte == "difficile":
+    elif etat_difficulte == "difficile":
         if tour > 1:  # Tête
             fenetre.blit(jinx_tete, (480, 70))
         if tour > 2:  # Corps
@@ -222,6 +225,38 @@ def bouton_arreter():
         fenetre.blit(arreter, (845, 150))
     
     return clic
+
+
+# Niveau de difficulté
+etat_difficulte = "normal"  # Déclaré globalement pour être utilisé partout
+
+def bouton_difficile():
+    global etat_difficulte  # Utilisation de la variable globale
+    souris = pygame.mouse.get_pos()
+    bouton_largeur = 170
+    bouton_hauteur = 40
+    bouton = pygame.image.load("image/acier2.jpg")
+    bouton = pygame.transform.scale(bouton, (bouton_largeur, bouton_hauteur))
+
+    # Détection de la souris sur le bouton
+    if 800 <= souris[0] <= 800 + bouton_largeur and 210 <= souris[1] <= 210 + bouton_hauteur:
+        fenetre.blit(bouton, (800, 210))
+        texte = police_survol.render(etat_difficulte, True, BLANC)
+        fenetre.blit(texte, (840, 220))
+
+        # Vérification du clic
+        for evenement in pygame.event.get():
+            if evenement.type == pygame.MOUSEBUTTONDOWN:
+                if etat_difficulte == "normal":
+                    etat_difficulte = "difficile"
+                elif etat_difficulte == "difficile":
+                    etat_difficulte = "facile"
+                elif etat_difficulte == "facile":
+                    etat_difficulte = "normal"
+    else:
+        fenetre.blit(bouton, (800, 210))
+        texte = police.render(etat_difficulte, True, NOIR)
+        fenetre.blit(texte, (840, 220))
         
         
 def affiche_mauvaises_lettres(lettres_fausses):
@@ -231,9 +266,9 @@ def affiche_mauvaises_lettres(lettres_fausses):
 
 fichier_mots = "mots.txt"
 
-def verifie_fin(mot, devine, erreurs, difficulte, accepte_lettres):
+def verifie_fin(mot, devine, erreurs, accepte_lettres):
     # Vérifications de fin de jeu
-    if erreurs > 9 and difficulte == "facile" or erreurs > 6 and difficulte == "moyen" or erreurs > 4 and difficulte == "difficile":
+    if erreurs > 9 and etat_difficulte == "facile" or erreurs > 6 and etat_difficulte == "moyen" or erreurs > 4 and etat_difficulte == "difficile":
         accepte_lettres = False
         text = police.render("Perdu !", True, ROUGE)
         fenetre.blit(text, (400, 100))
@@ -262,6 +297,7 @@ def partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, difficulte):
 
 def main():
     """"""
+
     difficulte = "moyen"
     en_cours = True
     # affiche = False
@@ -274,22 +310,22 @@ def main():
     while en_cours:
 
         fenetre.blit(fond_ecran, (0, 0))
+        dessine_potence(erreurs)
+        if bouton_jouer(affiche):
+            affiche = True
+        
+        bouton_difficile()   
+
+
         
         mot, devine, lettres_fausses, erreurs, accepte_lettres = bouton_jouer(mot, devine, lettres_fausses, erreurs, accepte_lettres)
 
         if mot != "XXXX":
             partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, difficulte)
-        
-        # if bouton_arreter():
-        #     affiche = False
-        #     devine = []
-        #     lettres_fausses = []
-        #     erreurs = 0
-        
-        # mot, accepte_lettres = partie(devine, lettres_fausses, erreurs, accepte_lettres, difficulte, affiche)
 
         text = police.render(f"mot: {mot}", True, VERT)
         fenetre.blit(text, (400, 200)) # pour test, affiche mot
+
 
         for evenement in pygame.event.get():
             if evenement.type == pygame.QUIT:
