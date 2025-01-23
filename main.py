@@ -273,8 +273,23 @@ def bouton_ajout():
         for evenement in pygame.event.get():
             if evenement.type == pygame.MOUSEBUTTONDOWN:
                 # permet d'ajouter un mot dans le fichier 'mot.txt'
-                mot_dico = ""
-                ajouter_mot(fichier_mots, mot_dico)
+                nouveau_mot = "Entrez un nouveau mot"
+                font = pygame.font.SysFont(None, 48)
+                img = font.render(nouveau_mot, True, ROUGE)
+                rect = img.get_rect()
+                rect.topleft = (20, 20)
+                cursor = Rect(rect.topright, (3, rect.height))
+                if evenement.type == KEYDOWN:
+                    if evenement.key == K_BACKSPACE:
+                        if len(nouveau_mot)>0:
+                            nouveau_mot = nouveau_mot[:-1]
+                    else:
+                        nouveau_mot += evenement.unicode
+                    img = font.render(nouveau_mot, True, ROUGE)
+                rect.size=img.get_size()
+                cursor.topleft = rect.topright
+                fenetre.blit(img, rect)
+                ajouter_mot(fichier_mots, nouveau_mot)
 
     else: 
         jouer = fenetre.blit(bouton, (800, 300))        
