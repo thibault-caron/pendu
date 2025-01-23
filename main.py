@@ -154,10 +154,13 @@ def dessine_jinx(tour, difficulte):
 
             
 # Dessiner les lettres
-def affiche_texte(mot, devine):
-    affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
-    texte = police.render(affiche_mot, True, BLANC)
-    fenetre.blit(texte, (300, 650))
+def affiche_texte(mot, devine, affiche):
+    if affiche == True:
+        affiche_mot = " ".join([lettre if lettre in devine else "_" for lettre in mot])
+        texte = police.render(affiche_mot, True, BLANC)
+        fenetre.blit(texte, (300, 650))
+    else:
+        affiche == False
    
 # Dessiner les boutons
 def bouton_jouer():  
@@ -212,6 +215,7 @@ def main():
     erreurs = 0
     en_cours = True
     accepte_lettres = True
+    affiche = False
     while en_cours:
 
         fenetre.blit(fond_ecran, (0, 0))
@@ -224,7 +228,7 @@ def main():
         liste_de_faux = police.render(f"mauvaises lettres: {' '.join(map(str, lettres_fausses))}", True, ROUGE)
         fenetre.blit(liste_de_faux, (50, 550))
 
-        affiche_texte(mot, devine)
+        affiche_texte(mot, devine, affiche= True)
 
         for evenement in pygame.event.get():
             if evenement.type == pygame.QUIT:
