@@ -102,7 +102,7 @@ def dessine_potence(tour):
             fenetre.blit(corde1, (500, 30))
             fenetre.blit(potence_horizontale, (370, 30))
             
-    elif etat_difficulte == "moyen" or etat_difficulte == "difficile":
+    elif etat_difficulte == "normal" or etat_difficulte == "difficile":
         if tour > 0:
             fenetre.blit(potence_base, (260, 430))
             fenetre.blit(potence_verticale, (350, 30))
@@ -128,7 +128,7 @@ def dessine_jinx(tour):
         if tour > 9:  # Jambe droite
             fenetre.blit(jinx_jambe_gauche, (480, 70))
             
-    elif etat_difficulte == "moyen":
+    elif etat_difficulte == "normal":
         if tour > 1:  # Tête
             fenetre.blit(jinx_tete, (480, 70))
         if tour > 2:  # Corps
@@ -228,9 +228,6 @@ def bouton_arreter():
     return clic
 
 
-# Niveau de difficulté
-etat_difficulte = "normal"  # Déclaré globalement pour être utilisé partout
-
 def bouton_difficile():
     global etat_difficulte  # Utilisation de la variable globale
     souris = pygame.mouse.get_pos()
@@ -294,17 +291,17 @@ def affiche_mauvaises_lettres(lettres_fausses, affiche):
 
 def verifie_fin(mot, devine, erreurs, accepte_lettres):
     # Vérifications de fin de jeu
-    if erreurs > 9 and etat_difficulte == "facile" or erreurs > 6 and etat_difficulte == "moyen" or erreurs > 4 and etat_difficulte == "difficile":
+    if erreurs > 9 and etat_difficulte == "facile" or erreurs > 6 and etat_difficulte == "normal" or erreurs > 4 and etat_difficulte == "difficile":
         accepte_lettres = False
         text = police.render("Perdu !", True, ROUGE)
-        fenetre.blit(text, (400, 100))
+        fenetre.blit(text, (400, 300))
         text = police.render(f"mot à trouver: {mot}", True, ROUGE)
         fenetre.blit(text, (400, 200))
 
     elif all(lettre in devine for lettre in mot):
         accepte_lettres = False
         text = police.render("Gagné !", True, VERT)
-        fenetre.blit(text, (400, 100))
+        fenetre.blit(text, (400, 300))
 
     return accepte_lettres
 
