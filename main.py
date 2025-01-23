@@ -10,6 +10,7 @@ Sortie :
 import pygame
 from pygame.locals import *
 
+from fonctions.init_pygame import init_pygame
 from fonctions.bouton_jouer import bouton_jouer
 from fonctions.bouton_arreter import bouton_arreter
 from fonctions.bouton_difficile import bouton_difficile
@@ -20,43 +21,10 @@ from fonctions.partie import partie
 pygame.init()
 pygame.font.init()
 
-# Dimensions de la fenêtre (classe)
-LARGEUR, HAUTEUR = 1000, 700
-fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
-pygame.display.set_caption("Jeu du Pendu - Edition spéciale Jinx")
-
-police = pygame.font.SysFont('Roboto', 35)
-police_survol = pygame.font.SysFont('Roboto', 35, True)
-
-# Couleurs
-NOIR = (0, 0, 0)
-GRIS = (127, 127, 127)
-BLANC = (255, 255, 255)
-ROUGE = (255, 0, 0)
-VERT = (0, 255, 0)
-BLEU = (0, 0, 255)
-JAUNE = (255, 255, 0)
-CYAN = (0, 255, 255)
-MAGENTA = (255, 0, 255)
-
-# Horloge
-FPS = pygame.time.Clock()
-
-
-
-# AFFICHAGE DES OBJETS #
-
-# Ajouter une image de fond
-fond_ecran = pygame.image.load("image/fond_ecran.jpg")
-fond_ecran = pygame.transform.scale(fond_ecran, (LARGEUR, HAUTEUR))
-
-        
-
-
 
 def main():
     """"""
-
+    fenetre, police, police_survol, fichier_mots, fond_ecran, NOIR, GRIS, BLANC, ROUGE, VERT, FPS = init_pygame()
     en_cours = True
     affiche = True
     mot = "XXXX"

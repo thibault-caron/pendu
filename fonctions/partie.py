@@ -1,4 +1,6 @@
 import pygame
+
+from .init_pygame import init_pygame
 from .dessine_jinx import dessine_jinx
 from .desssine_potence import dessine_potence
 from .affiche_mauvaises_lettres import affiche_mauvaises_lettres
@@ -9,10 +11,7 @@ from .verifie_fin import verifie_fin
 pygame.init()
 pygame.font.init()
 
-LARGEUR, HAUTEUR = 1000, 700
-fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
-
-police = pygame.font.SysFont('Roboto', 35)
+fenetre, police, police_survol, fichier_mots, fond_ecran, NOIR, GRIS, BLANC, ROUGE, VERT, FPS = init_pygame()
 
 def partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche, etat_difficulte):
 

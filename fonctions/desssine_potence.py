@@ -1,11 +1,12 @@
 import pygame
 
+from .init_pygame import init_pygame
+
 # Initialisation de Pygame
 pygame.init()
 pygame.font.init()
 
-LARGEUR, HAUTEUR = 1000, 700
-fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
+fenetre, police, police_survol, fichier_mots, fond_ecran, NOIR, GRIS, BLANC, ROUGE, VERT, FPS = init_pygame()
 
 # Dessiner la potence
 

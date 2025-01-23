@@ -1,16 +1,12 @@
 import pygame
 
+from .init_pygame import init_pygame
+
 # Initialisation de Pygame
 pygame.init()
 pygame.font.init()
 
-LARGEUR, HAUTEUR = 1000, 700
-fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
-
-police = pygame.font.SysFont('Roboto', 35)
-
-ROUGE = (255, 0, 0)
-VERT = (0, 255, 0)
+fenetre, police, police_survol, fichier_mots, fond_ecran, NOIR, GRIS, BLANC, ROUGE, VERT, FPS = init_pygame()
 
 def verifie_fin(mot, devine, erreurs, accepte_lettres, etat_difficulte):
     # Vérifications de fin de jeu

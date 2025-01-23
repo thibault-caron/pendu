@@ -1,17 +1,12 @@
 import pygame
 
+from .init_pygame import init_pygame
+
 # Initialisation de Pygame
 pygame.init()
 pygame.font.init()
 
-LARGEUR, HAUTEUR = 1000, 700
-fenetre = pygame.display.set_mode((LARGEUR, HAUTEUR))
-
-police = pygame.font.SysFont('Roboto', 35)
-police_survol = pygame.font.SysFont('Roboto', 35, True)
-
-BLANC = (255, 255, 255)
-NOIR = (0, 0, 0)
+fenetre, police, police_survol, fichier_mots, fond_ecran, NOIR, GRIS, BLANC, ROUGE, VERT, FPS = init_pygame()
 
 def bouton_arreter():
     # Détecte la postion de la souris en tuple [x, y]
