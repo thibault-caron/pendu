@@ -7,24 +7,20 @@ Entrée :
 Sortie :
 """
 
-import pygame
-from pygame.locals import *
+from fonctions.init_pygame import *
 
-from fonctions.init_pygame import init_pygame
 from fonctions.bouton_jouer import bouton_jouer
 from fonctions.bouton_arreter import bouton_arreter
 from fonctions.bouton_difficile import bouton_difficile
 from fonctions.bouton_ajout import bouton_ajout
 from fonctions.partie import partie
 
-# Initialisation de Pygame
-pygame.init()
-pygame.font.init()
+
 
 
 def main():
     """"""
-    fenetre, police, police_survol, fichier_mots, fond_ecran, NOIR, GRIS, BLANC, ROUGE, VERT, FPS = init_pygame()
+    # fenetre, police, police_survol, fichier_mots, fond_ecran, NOIR, GRIS, BLANC, ROUGE, VERT, FPS = init_pygame()
     en_cours = True
     affiche = True
     mot = "XXXX"

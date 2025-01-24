@@ -1,12 +1,4 @@
-import pygame
-
-from .init_pygame import init_pygame
-
-# Initialisation de Pygame
-pygame.init()
-pygame.font.init()
-
-fenetre, police, police_survol, fichier_mots, fond_ecran, NOIR, GRIS, BLANC, ROUGE, VERT, FPS = init_pygame()
+from .init_pygame import *
 
 # Dessiner la potence
 
