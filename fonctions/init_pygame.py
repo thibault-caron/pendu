@@ -14,10 +14,6 @@ def init_pygame():
     police = pygame.font.SysFont('Roboto', 35)
     police_survol = pygame.font.SysFont('Roboto', 35, True)
 
-    BLANC = (255, 255, 255)
-    NOIR = (0, 0, 0)
-    ROUGE = (255, 0, 0)
-
     fichier_mots = "mots.txt"
 
     # Couleurs
@@ -26,10 +22,6 @@ def init_pygame():
     BLANC = (255, 255, 255)
     ROUGE = (255, 0, 0)
     VERT = (0, 255, 0)
-    BLEU = (0, 0, 255)
-    JAUNE = (255, 255, 0)
-    CYAN = (0, 255, 255)
-    MAGENTA = (255, 0, 255)
     
     fichier_mots = "mots.txt"
 
