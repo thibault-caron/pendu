@@ -21,7 +21,7 @@ def init_pygame():
     GRIS = (127, 127, 127)
     BLANC = (255, 255, 255)
     ROUGE = (255, 0, 0)
-    VERT = (0, 255, 0)
+    VERT = (0, 100, 0)
     
     fichier_mots = "mots.txt"
 
