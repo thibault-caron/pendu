@@ -22,8 +22,6 @@ def init_pygame():
     BLANC = (255, 255, 255)
     ROUGE = (255, 0, 0)
     VERT = (0, 100, 0)
-    
-    fichier_mots = "mots.txt"
 
     # Horloge
     FPS = pygame.time.Clock()
