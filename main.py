@@ -33,6 +33,8 @@ def main():
     erreurs = 0
     accepte_lettres = False
     etat_difficulte = "normal"
+    zone_texte = False
+    nouveau_mot = ""
 
     while en_cours:
 
@@ -53,7 +55,7 @@ def main():
             
         etat_difficulte = bouton_difficile(etat_difficulte)
         
-        bouton_ajout()
+        zone_texte, nouveau_mot = bouton_ajout(zone_texte, nouveau_mot)
 
         text = police.render(f"mot: {mot}", True, VERT)
         fenetre.blit(text, (400, 200)) # pour test, affiche mot

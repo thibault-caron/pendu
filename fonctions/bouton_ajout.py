@@ -11,7 +11,7 @@ pygame.font.init()
 fenetre, police, police_survol, fichier_mots, fond_ecran, NOIR, GRIS, BLANC, ROUGE, VERT, FPS = init_pygame()
 
 
-def bouton_ajout():
+def bouton_ajout(zone_texte, nouveau_mot):
         # Détecte la postion de la souris en tuple [x, y]
     souris = pygame.mouse.get_pos()
         
@@ -27,26 +27,38 @@ def bouton_ajout():
         
         for evenement in pygame.event.get():
             if evenement.type == pygame.MOUSEBUTTONDOWN:
-                # permet d'ajouter un mot dans le fichier 'mot.txt'
-                nouveau_mot = "Entrez un nouveau mot"
-                font = pygame.font.SysFont(None, 48)
-                img = font.render(nouveau_mot, True, ROUGE)
-                rect = img.get_rect()
-                rect.topleft = (20, 20)
-                cursor = Rect(rect.topright, (3, rect.height))
-                if evenement.type == KEYDOWN:
-                    if evenement.key == K_BACKSPACE:
-                        if len(nouveau_mot)>0:
-                            nouveau_mot = nouveau_mot[:-1]
-                    else:
-                        nouveau_mot += evenement.unicode
-                    img = font.render(nouveau_mot, True, ROUGE)
-                rect.size=img.get_size()
-                cursor.topleft = rect.topright
-                fenetre.blit(img, rect)
-                ajouter_mot(fichier_mots, nouveau_mot)
+                zone_texte = True
+                nouveau_mot = ""
 
     else: 
         jouer = fenetre.blit(bouton, (800, 300))        
         jouer = police.render('Ajout mot' , True , NOIR)
-        fenetre.blit(jouer, (825, 310))    
+        fenetre.blit(jouer, (825, 310))
+    
+    if zone_texte:
+        pygame.draw.rect(fenetre, BLANC, (800, 340, 170, 50))
+        texte_affiche = police.render(nouveau_mot, True, NOIR)
+        fenetre.blit(texte_affiche, (810, 350))
+        
+        # Afficher le curseur
+        if pygame.time.get_ticks() % 1000 < 500:
+            pygame.draw.line(fenetre, NOIR, (810 + texte_affiche.get_width(), 350), (810 + texte_affiche.get_width(), 380), 2)
+
+        for evenement in pygame.event.get():
+            if evenement.type == pygame.KEYDOWN:
+                # Validation avec Entrée
+                if evenement.key == pygame.K_RETURN:
+                    # Si le mot n'est pas vide
+                    if nouveau_mot.strip():
+                        ajouter_mot(fichier_mots, nouveau_mot.strip())
+                        # Quitte le mode de dessin de la zone de texte
+                    zone_texte = False
+                # Supprime les lettres mal entrées
+                elif evenement.key == pygame.K_BACKSPACE:
+                    nouveau_mot = nouveau_mot[:-1]
+                # Ajout des caractères
+                else:
+                    nouveau_mot += evenement.unicode
+        
+        
+    return zone_texte, nouveau_mot
