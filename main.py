@@ -57,15 +57,16 @@ def main():
         
         zone_texte, nouveau_mot = bouton_ajout(zone_texte, nouveau_mot)
 
-        text = police.render(f"mot: {mot}", True, VERT)
-        fenetre.blit(text, (400, 200)) # pour test, affiche mot
+        # text = police.render(f"mot: {mot}", True, VERT)
+        # fenetre.blit(text, (400, 200)) 
+        # # pour test, affiche mot
 
 
         for evenement in pygame.event.get():
             if evenement.type == pygame.QUIT:
                 en_cours = False
 
-            elif evenement.type == pygame.KEYDOWN and "mot" is not "XXXX":
+            elif evenement.type == pygame.KEYDOWN and "mot" != "XXXX":
                     if accepte_lettres:
                         if evenement.unicode.isalpha():
                             lettre = evenement.unicode.upper()
