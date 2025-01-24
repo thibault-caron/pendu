@@ -1,14 +1,5 @@
-import pygame
-from pygame.locals import *
-
-from .init_pygame import init_pygame
+from .init_pygame import *
 from .ajouter_mot import ajouter_mot
-
-# Initialisation de Pygame
-pygame.init()
-pygame.font.init()
-
-fenetre, police, police_survol, fichier_mots, fond_ecran, NOIR, GRIS, BLANC, ROUGE, VERT, FPS = init_pygame()
 
 
 def bouton_ajout(zone_texte, nouveau_mot):

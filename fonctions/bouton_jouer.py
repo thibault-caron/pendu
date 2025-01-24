@@ -1,13 +1,5 @@
-import pygame
-import random
+from .init_pygame import *
 
-from .init_pygame import init_pygame
-
-# Initialisation de Pygame
-pygame.init()
-pygame.font.init()
-
-fenetre, police, police_survol, fichier_mots, fond_ecran, NOIR, GRIS, BLANC, ROUGE, VERT, FPS = init_pygame()
 
 def bouton_jouer(mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche):  
     # Détecte la postion de la souris en tuple [x, y]
