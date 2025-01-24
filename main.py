@@ -16,8 +16,6 @@ from fonctions.bouton_ajout import bouton_ajout
 from fonctions.partie import partie
 
 
-
-
 def main():
     """"""
     # fenetre, police, police_survol, fichier_mots, fond_ecran, NOIR, GRIS, BLANC, ROUGE, VERT, FPS = init_pygame()

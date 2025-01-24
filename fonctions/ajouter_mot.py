@@ -1,4 +1,3 @@
-
 def ajouter_mot(fichier, mot):
     """
     Ajout un nouveau mot au fichier texte contenant la liste de mots du jeu.

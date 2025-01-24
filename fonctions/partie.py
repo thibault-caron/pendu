@@ -1,6 +1,6 @@
 from .init_pygame import *
 from .dessine_jinx import dessine_jinx
-from .desssine_potence import dessine_potence
+from .dessine_potence import dessine_potence
 from .affiche_mauvaises_lettres import affiche_mauvaises_lettres
 from .affiche_texte import affiche_texte
 from .verifie_fin import verifie_fin
