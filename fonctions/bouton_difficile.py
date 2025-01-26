@@ -2,7 +2,11 @@ from .init_pygame import *
 
 
 def bouton_difficile(etat_difficulte):
-
+    """
+    Permet de sélectionner le niveau de difficulté.
+    :param etat_difficulte: Prend trois valeurs en fonction du niveau de difficulté choisi.
+    :return: Enregistre le niveau de difficulté choisi.
+    """
     souris = pygame.mouse.get_pos()
     bouton_largeur = 170
     bouton_hauteur = 40
