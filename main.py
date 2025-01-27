@@ -18,7 +18,6 @@ from fonctions.partie import partie
 
 def main():
     """"""
-    # fenetre, police, police_survol, fichier_mots, fond_ecran, NOIR, GRIS, BLANC, ROUGE, VERT, FPS = init_pygame()
     en_cours = True
     affiche = True
     mot = "XXXX"
@@ -78,6 +77,4 @@ def main():
 
 if __name__ == "__main__":  # Evite que le programme puisse être lancé depuis un autre programme.
 
-    # nouveau_mot = "tuyau"
-    # ajouter_mot(fichier_mots, nouveau_mot)
     main()

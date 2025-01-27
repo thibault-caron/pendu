@@ -23,7 +23,3 @@ def ajouter_mot(fichier, mot):
     if not existence_mot(mot):
        with open(fichier, "a") as mots_pendu:
             mots_pendu.write(f"\n{mot}")
-
-
-# fichier_mots = "mots.txt"
-# ajouter_mot(fichier_mots, mot="anaconda")
