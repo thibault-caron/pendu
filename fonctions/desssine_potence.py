@@ -1,6 +1,6 @@
 from .init_pygame import *
 
-# Dessiner la potence
+# Variables dessinant chacune un morceau de la potence #
 
 # Base
 potence_base = pygame.image.load("image/acier2.jpg")
@@ -23,6 +23,12 @@ corde2 = pygame.transform.scale(corde2, (50, 90))
 
 
 def dessine_potence(tour, etat_difficulte):
+    """
+    Permet de dessiner la potence.
+    :param tour: Tour actuel du jeu.
+    :param etat_difficulte: Niveau de difficulté choisi.
+    :return: Dessine un nouveau morceau de la potence.
+    """
     if etat_difficulte == "facile":
         if tour > 0:
             fenetre.blit(potence_base, (260, 430))

@@ -7,6 +7,17 @@ from .verifie_fin import verifie_fin
 
 
 def partie(mot, devine, lettres_fausses, erreurs, accepte_lettres, affiche, etat_difficulte):
+    """
+    Fonction qui permet à une partie du jeu de se dérouler.
+    :param mot: Mot à deviner.
+    :param devine: Liste des lettres devinées qui s'affichent à l'écran.
+    :param lettres_fausses: Liste dans laquelle sont ajoutées les fausses lettres.
+    :param erreurs: Nombre d'erreurs commises par le joueur.
+    :param accepte_lettres: Permet d'entrer des lettres pour deviner le mot si True.
+    :param affiche: Permet l'affichage du jeu si True.
+    :param etat_difficulte: Niveau de difficulté choisi.
+    :return: Exécute la partie.
+    """
 
     dessine_potence(erreurs, etat_difficulte)
     dessine_jinx(erreurs, etat_difficulte)

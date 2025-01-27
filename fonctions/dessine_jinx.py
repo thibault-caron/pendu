@@ -1,6 +1,6 @@
 from .init_pygame import *
 
-# Dessiner Jinx
+# Variables dessinant chacune un morceau du jinx #
 
 jinx_tete = pygame.image.load("image/jinx_head.webp")
 jinx_tete = pygame.transform.scale(jinx_tete, (353 / 4, 1276 / 4))
@@ -23,7 +23,14 @@ jinx_jambe_droite = pygame.transform.scale(jinx_jambe_droite, (353 / 4, 1276 / 4
 jinx_jambe_gauche = pygame.image.load("image/jinx_left_leg.webp")
 jinx_jambe_gauche = pygame.transform.scale(jinx_jambe_gauche, (353 / 4, 1276 / 4))
 
+
 def dessine_jinx(tour, etat_difficulte):
+    """
+    Permet de dessiner le jinx (bonhomme du jeu).
+    :param tour: Tour actuel du jeu.
+    :param etat_difficulte: Niveau de difficulté choisi.
+    :return: Dessine un nouveau morceau du jinx.
+    """
     if etat_difficulte == "facile":
         if tour > 4:  # Tête
             fenetre.blit(jinx_tete, (480, 70))
